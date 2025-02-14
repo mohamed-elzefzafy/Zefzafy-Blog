@@ -1,4 +1,5 @@
 import { CategoryEntity } from 'src/category/entities/category.entity';
+import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -7,6 +8,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
   UpdateDateColumn,
@@ -31,12 +33,15 @@ export class PostEntity {
   })
   category: CategoryEntity;
 
-  @Column({type : "jsonb", nullable: true})
-  image:  { secure_url: string; public_id: string };
+  @Column({ type: 'jsonb', nullable: true })
+  image: { secure_url: string; public_id: string };
 
   @ManyToMany(() => UserEntity, (user) => user.likedPosts)
   @JoinTable({ name: 'liked_posts' })
   likes: UserEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  comments: CommentEntity[];
 
   @CreateDateColumn()
   createdAt: Timestamp;

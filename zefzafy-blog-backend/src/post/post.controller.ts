@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   ParseIntPipe,
+  Put,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -48,6 +49,11 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
+  @Get('category-posts/:categoryId')
+  findCtegoryPosts(@Param('categoryId', ParseIntPipe) categoryId: number) {
+    return this.postService.findCtegoryPosts(categoryId);
+  }
+
   @Patch(':id')
   @Roles([UserRoles.USER, UserRoles.ADMIN])
   @UseGuards(AuthGuard)
@@ -61,8 +67,20 @@ export class PostController {
     return this.postService.update(id, updatePostDto , user , file);
   }
 
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postService.remove(+id);
   }
+
+  @Put('like-post/:id')
+  @Roles([UserRoles.USER, UserRoles.ADMIN])
+  @UseGuards(AuthGuard)
+  toggleLikePost(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser("user") user: JwtPayloadType,
+  ) {
+    return this.postService.toggleLikePost(id , user);
+  }
+
 }

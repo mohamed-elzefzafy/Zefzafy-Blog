@@ -16,6 +16,8 @@ import { CategoryModule } from './category/category.module';
 import { CategoryEntity } from './category/entities/category.entity';
 import { PostModule } from './post/post.module';
 import { PostEntity } from './post/entities/post.entity';
+import { CommentModule } from './comment/comment.module';
+import { CommentEntity } from './comment/entities/comment.entity';
 
 
 
@@ -27,7 +29,7 @@ import { PostEntity } from './post/entities/post.entity';
     useFactory: (configService: ConfigService) => ({
       type: 'postgres',
       url: configService.get<string>('DATABASE_URL'), // Neon database URL
-      entities: [UserEntity , TestEntity , CategoryEntity , PostEntity], // Add your entities here
+      entities: [UserEntity , TestEntity , CategoryEntity , PostEntity , CommentEntity], // Add your entities here
       synchronize: true, // Disable in production to avoid unintended schema changes
     }),
   }),
@@ -58,6 +60,7 @@ import { PostEntity } from './post/entities/post.entity';
   AuthModule,
   CategoryModule,
   PostModule,
+  CommentModule,
 
 ],
 })

@@ -1,3 +1,4 @@
+import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { UserRoles } from 'src/common/enums/roles.enum';
 import { PostEntity } from 'src/post/entities/post.entity';
 import {
@@ -16,23 +17,23 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({type : "varchar" , length : 150 , nullable: false})
+  @Column({ type: 'varchar', length: 150, nullable: false })
   firstName: string;
 
-  @Column({type : "varchar" , length : 150 , nullable: false})
+  @Column({ type: 'varchar', length: 150, nullable: false })
   lastName: string;
 
-  @Column({type : "varchar" , length : 300 , unique: true })
+  @Column({ type: 'varchar', length: 300, unique: true })
   email: string;
 
-  @Column({type : "varchar"})
+  @Column({ type: 'varchar' })
   password: string;
 
   @Column({ default: false })
   isAccountVerified: boolean;
 
-  @Column({default :null})
-  verificationCode : number | null;
+  @Column({ default: null })
+  verificationCode: number | null;
 
   @Column({
     nullable: true,
@@ -42,14 +43,17 @@ export class UserEntity {
   })
   profileImage: { secure_url: string; public_id: string | null };
 
-  @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER})
+  @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER })
   role: UserRoles;
 
-  @OneToMany(() => PostEntity , post => post.user)
-  posts : PostEntity[]
+  @OneToMany(() => PostEntity, (post) => post.user)
+  posts: PostEntity[];
 
-  @ManyToMany(() => PostEntity , post => post.likes)
-  likedPosts : PostEntity[];
+  @ManyToMany(() => PostEntity, (post) => post.likes)
+  likedPosts: PostEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.user)
+  comments: CommentEntity[];
 
   @CreateDateColumn()
   createdAt: Timestamp;

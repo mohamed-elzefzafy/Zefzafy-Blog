@@ -25,7 +25,7 @@ import { UserRoles } from 'src/common/enums/roles.enum';
 import { AuthGuard } from './guards/auth.guard';
 import { VerificationAccountDto } from './dtos/verification-account.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { STATUS_CODES } from 'http';
+
 
 @Controller('auth')
 export class AuthController {

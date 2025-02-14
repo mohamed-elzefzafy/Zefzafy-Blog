@@ -1,4 +1,6 @@
 import {
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -13,13 +15,14 @@ import { CategoryService } from 'src/category/category.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { UsersService } from 'src/users/users.service';
 import { JwtPayloadType } from 'src/common/types';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepositry: Repository<PostEntity>,
-    private readonly categoryService: CategoryService,
+    @Inject(forwardRef(() => CategoryService))  private readonly categoryService: CategoryService,
     private readonly usersService: UsersService,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
@@ -56,7 +59,10 @@ export class PostService {
   }
 
   public async findOne(id: number) {
-    const post = await this.postRepositry.findOne({ where: {id} , relations : { user: true}});
+    const post = await this.postRepositry.findOne({
+      where: { id },
+      relations: { user: true , likes : true , comments: true }, 
+    });
     if (!post) throw new NotFoundException('post not found');
     return post;
   }
@@ -77,7 +83,9 @@ export class PostService {
     }
 
     if (updatePostDto.category) {
-      const category = await this.categoryService.findOne(updatePostDto.category);
+      const category = await this.categoryService.findOne(
+        updatePostDto.category,
+      );
       if (!category) throw new NotFoundException('category not found');
     }
 
@@ -87,8 +95,10 @@ export class PostService {
         await this.cloudinaryService.removeImage(post.image.public_id);
       }
       const result = await this.cloudinaryService.uploadImage(file, 'posts');
-      post.image = { secure_url: result.secure_url, public_id: result.public_id };
- 
+      post.image = {
+        secure_url: result.secure_url,
+        public_id: result.public_id,
+      };
     }
     await this.postRepositry.save(post);
     return post;
@@ -96,5 +106,33 @@ export class PostService {
 
   remove(id: number) {
     return `This action removes a #${id} post`;
+  }
+
+  public async findCtegoryPosts(categoryId: number) {
+    const category = await this.categoryService.findOne(categoryId);
+    console.log('category', category);
+    const posts = await this.postRepositry.find({
+      where: { category: { id: categoryId } },
+      relations: { category: true },
+    });
+    console.log('posts', posts);
+
+    return posts;
+  }
+
+  public async toggleLikePost(id : number , user : JwtPayloadType) {
+    const post = await this.findOne(id);
+    if (!post) throw new NotFoundException('post not found');
+    // const fullUser = await this.usersService.findOne(user.id);
+    console.log(post.likes);
+    if (!post.likes) post.likes = [];
+    
+    if (post.likes.find(like => like.id === user.id)) {
+      post.likes = post.likes.filter(like => like.id !== user.id);
+    } else {
+      post.likes.push({id : user.id} as UserEntity);
+    }
+    return this.postRepositry.save(post);
+
   }
 }
