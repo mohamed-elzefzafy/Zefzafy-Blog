@@ -22,7 +22,9 @@ export class PostService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepositry: Repository<PostEntity>,
-    @Inject(forwardRef(() => CategoryService))  private readonly categoryService: CategoryService,
+    @Inject(forwardRef(() => CategoryService))
+    private readonly categoryService: CategoryService,
+    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
@@ -52,16 +54,28 @@ export class PostService {
     return post;
   }
 
-  findAll() {
-    return this.postRepositry.find({
-      relations: { category: true, user: true },
-    });
-  }
+  async findAll({ page, limit, search }: { page: number; limit: number; search: string }) {
+    const query = this.postRepositry.createQueryBuilder('post');
 
+    if (search) {
+      query.where('post.title ILIKE :search OR post.content ILIKE :search', { search: `%${search}%` });
+    }
+
+    query.skip((page - 1) * limit).take(limit);
+
+    const [posts, total] = await query.getManyAndCount();
+
+    return {
+      data: posts,
+      total,
+      page ,
+      limit,
+    };
+  }
   public async findOne(id: number) {
     const post = await this.postRepositry.findOne({
       where: { id },
-      relations: { user: true , likes : true , comments: true }, 
+      relations: { user: true, likes: true, comments: true },
     });
     if (!post) throw new NotFoundException('post not found');
     return post;
@@ -104,15 +118,19 @@ export class PostService {
     return post;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  public async remove(id: number) {
+   const post = await this.findOne(id);
+   if (post.image) {
+     await this.cloudinaryService.removeImage(post.image.public_id);
+   }
+    this.postRepositry.remove(post);
+    return {message : `Post with id (${id}) was removed`}
   }
 
   public async findCtegoryPosts(categoryId: number) {
     const category = await this.categoryService.findOne(categoryId);
-    console.log('category', category);
     const posts = await this.postRepositry.find({
-      where: { category: { id: categoryId } },
+      where: { category: { id: category.id } },
       relations: { category: true },
     });
     console.log('posts', posts);
@@ -120,19 +138,30 @@ export class PostService {
     return posts;
   }
 
-  public async toggleLikePost(id : number , user : JwtPayloadType) {
+  public async findUserPosts(userId: number) {
+    const user = await this.usersService.findOne(userId);
+    console.log('user', user);
+    const posts = await this.postRepositry.find({
+      where: { user: { id: user.id } },
+      relations: { user: true },
+    });
+    console.log('posts', posts);
+
+    return posts;
+  }
+
+  public async toggleLikePost(id: number, user: JwtPayloadType) {
     const post = await this.findOne(id);
     if (!post) throw new NotFoundException('post not found');
     // const fullUser = await this.usersService.findOne(user.id);
     console.log(post.likes);
     if (!post.likes) post.likes = [];
-    
-    if (post.likes.find(like => like.id === user.id)) {
-      post.likes = post.likes.filter(like => like.id !== user.id);
+
+    if (post.likes.find((like) => like.id === user.id)) {
+      post.likes = post.likes.filter((like) => like.id !== user.id);
     } else {
-      post.likes.push({id : user.id} as UserEntity);
+      post.likes.push({ id: user.id } as UserEntity);
     }
     return this.postRepositry.save(post);
-
   }
 }

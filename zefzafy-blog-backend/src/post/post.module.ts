@@ -13,8 +13,8 @@ import { UsersModule } from 'src/users/users.module';
     TypeOrmModule.forFeature([PostEntity]),
     JwtModule,
     CloudinaryModule,
-    UsersModule,
-    forwardRef(() => CategoryModule)
+    forwardRef(() => UsersModule),
+    forwardRef(() => CategoryModule),
   ],
   controllers: [PostController],
   providers: [PostService],

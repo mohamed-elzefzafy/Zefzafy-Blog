@@ -11,6 +11,8 @@ import {
   UploadedFile,
   ParseIntPipe,
   Put,
+  Query,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -40,8 +42,12 @@ export class PostController {
   }
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('search') search: string = ''
+  ) {
+    return this.postService.findAll({ page, limit, search });
   }
 
   @Get(':id')
@@ -69,8 +75,10 @@ export class PostController {
 
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+  @Roles([UserRoles.ADMIN])
+  @UseGuards(AuthGuard)
+  remove(@Param('id' , ParseIntPipe) id: number) {
+    return this.postService.remove(id);
   }
 
   @Put('like-post/:id')

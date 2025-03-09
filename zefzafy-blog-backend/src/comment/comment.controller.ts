@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -28,7 +29,7 @@ export class CommentController {
     @Body() createCommentDto: CreateCommentDto,
     @CurrentUser('user') user: JwtPayloadType,
   ) {
-    return this.commentService.create(createCommentDto , user);
+    return this.commentService.create(createCommentDto, user);
   }
 
   @Get()
@@ -37,17 +38,25 @@ export class CommentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
+  @Roles([UserRoles.USER, UserRoles.ADMIN])
+  @UseGuards(AuthGuard)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCommentDto: UpdateCommentDto,
+    @CurrentUser('user') user: JwtPayloadType,
+  ) {
+    return this.commentService.update(id, updateCommentDto , user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  @Roles([UserRoles.USER, UserRoles.ADMIN])
+  @UseGuards(AuthGuard)
+  remove(@Param('id', ParseIntPipe) id: number ,  @CurrentUser('user') user: JwtPayloadType) {
+    return this.commentService.remove(id , user);
   }
 }

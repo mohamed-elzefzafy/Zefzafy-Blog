@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Header from "./components/Header";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "@/utils/theme";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "@/redux/store";
+import { Provider } from "react-redux";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,10 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
-    </html>
+    <AppRouterCacheProvider>
+      <html lang="en">
+        <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <body className={inter.className}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Header />
+            {children}
+          </ThemeProvider>
+        </body>
+        </PersistGate>
+        </Provider>
+      </html>
+    </AppRouterCacheProvider>
   );
 }
