@@ -218,7 +218,7 @@ export class AuthService {
 
  const result = await this.cloudinaryService.uploadImage(file, 'users');
  currentUser.profileImage = {
-   secure_url: result.secure_url,
+   url: result.secure_url,
    public_id: result.public_id,
  };
     }

@@ -41,7 +41,7 @@ export class UserEntity {
     default: () =>
       '\'{"url": "https://res.cloudinary.com/dw1bs1boz/image/upload/v1702487318/Zef-Blog/Default%20images/download_w26sr9.jpg", "public_id": null}\'',
   })
-  profileImage: { secure_url: string; public_id: string | null };
+  profileImage: { url: string; public_id: string | null };
 
   @Column({ type: 'enum', enum: UserRoles, default: UserRoles.USER })
   role: UserRoles;

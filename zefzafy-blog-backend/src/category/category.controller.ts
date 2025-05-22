@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -15,6 +16,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Roles } from 'src/auth/decorator/Roles.decorator';
 import { UserRoles } from 'src/common/enums/roles.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { PAGE_LIMIT_ADMIN } from 'src/common/constants';
 
 @Controller('category')
 export class CategoryController {
@@ -28,8 +30,11 @@ export class CategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  findAll(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = `${PAGE_LIMIT_ADMIN}`,
+  ) {
+    return this.categoryService.findAll(+page, +limit);
   }
 
   @Get(':id')
@@ -53,4 +58,10 @@ export class CategoryController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.categoryService.remove(id);
   }
+
+  // @Get('getCategoriesCount')
+  // @Roles([UserRoles.ADMIN])
+  // getPostsCount() {
+  //   return this.categoryService.getCategoriesCount();
+  // }
 }

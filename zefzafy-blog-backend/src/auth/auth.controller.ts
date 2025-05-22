@@ -85,7 +85,7 @@ export class AuthController {
   }
 
   @Patch()
-  @Roles([UserRoles.USER])
+  @Roles([UserRoles.USER, UserRoles.ADMIN])
   @UseGuards(AuthGuard)
   @Post('register')
   @UseInterceptors(FileInterceptor('profileImage'))

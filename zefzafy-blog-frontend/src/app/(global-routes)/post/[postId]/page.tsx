@@ -1,21 +1,18 @@
-import { IUserInfo } from "@/types/auth";
 import { IPost } from "@/types/post";
 import axiosRequest from "@/utils/request";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import CreateCommentForm from "./_components/CreateCommentForm";
+import CreateAndDisplayComments from "./_components/CreateAndDisplayComments";
+import ToggleLikePost from "./_components/ToggleLikePost";
+import EditPostButton from "./_components/EditPostButton";
+import Link from "next/link";
+import SearchParamComponent from "./_components/SearchParamComponent";
 
 const PostPage = async ({ params }: { params: { postId: string } }) => {
   const { data: post } = await axiosRequest.get<IPost>(
     `/api/v1/post/${params.postId}`
   );
-  console.log(post);
-
-  const { data: user } = await axiosRequest.get<IUserInfo>(
-    `/api/v1/users/${post.user.id}`
-  );
-  console.log(user);
 
   return (
     <Container sx={{ alignItems: "center", justifyContent: "center" }}>
@@ -27,6 +24,7 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
           minHeight: "calc(100vh - 68.5px)",
         }}
       >
+        <SearchParamComponent  returnPath={"/admin-dashboard/posts"}/>
         <Typography component="h1" variant="h4">
           {post.title}
         </Typography>
@@ -75,7 +73,10 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
             >
               Written By
             </Typography>{" "}
-            : {post.user.firstName + " " + post.user.lastName}
+            :{" "}
+            <Link href={`/profile/${post?.user.id}`}>
+              {post.user.firstName + " " + post.user.lastName}
+            </Link>
           </Typography>
 
           <Typography
@@ -116,7 +117,7 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
           </Typography>{" "}
           : {post?.updatedAt.substring(0, 10)}
         </Typography>
-
+        <EditPostButton postAutherId={post.user.id} postId={post.id} />
         <Stack sx={{ mt: 2, alignItems: "flex-start", width: "100%" }}>
           <Typography
             variant="h6"
@@ -128,14 +129,15 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
             sx={{
               marginTop: 2,
               fontSize: { xs: "16px", md: "20px" },
-              // textAlign: { xs: "justify", md: "center" },
               width: "100%",
+              borderBottom: 1,
+              borderColor: "grey.300",
+              pb: 2,
             }}
           >
             {post.content}
           </Typography>
-          {/* TODO:like  */}
-          <Box>like</Box>
+          <ToggleLikePost post={post} />
         </Stack>
 
         <Stack sx={{ mt: 5, alignItems: "flex-start", width: "100%" }}>
@@ -143,9 +145,12 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
             variant="h6"
             sx={{ color: "error.main", fontWeight: "bold" }}
           >
-            Post comments :{" "}
+            {post.comments.length < 1
+              ? "No Comments on this post"
+              : "Post comments"}{" "}
+            :{" "}
           </Typography>
-          <CreateCommentForm post={post} />
+          <CreateAndDisplayComments post={post} />
         </Stack>
       </Stack>
     </Container>

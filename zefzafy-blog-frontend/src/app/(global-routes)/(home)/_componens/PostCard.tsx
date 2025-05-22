@@ -1,6 +1,6 @@
-// "use client";
+"use client";
+import Grid from "@mui/material/Grid2";
 import { useAppSelector } from "@/redux/hooks";
-import { useDeletePostMutation } from "@/redux/slices/api/postApiSlice";
 import { IPost } from "@/types/post";
 import {
   Card,
@@ -15,21 +15,30 @@ import { blue } from "@mui/material/colors";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import swal from "sweetalert";
+import Link from "next/link";
 
 interface PostCardProps {
   post: IPost;
   refetchPosts: () => void;
+  page: number;
+  search?: string;
+  category?: string;
+  userId?: number;
+  deletePost: (args: { id: number; page?: number; search?: string; category?: string , userId? : number }) => void
 }
-
 export default function PostCard({
-  post: { title, content, image, category, id, user },
-  refetchPosts,
+  post: { title, content, image, category: postCategory, id, user },
+  page,
+  search,
+  category,
+  userId,
+  deletePost,
 }: PostCardProps) {
   const router = useRouter();
   const { userInfo } = useAppSelector((state) => state.auth);
-  const [deletePost] = useDeletePostMutation();
 
-  const onDeletePost = async (id: number) => {
+
+  const onDeletePost = async () => {
     try {
       const willDelete = await swal({
         title: "Are you sure?",
@@ -39,10 +48,15 @@ export default function PostCard({
       });
 
       if (willDelete) {
-        await deletePost(id).unwrap();
+        await deletePost({
+          id,
+          page,
+          search,
+          category,
+          userId,
+        });
+        router.refresh();
         toast.success("Post deleted successfully");
-        refetchPosts();
-        router.refresh(); // This should trigger a refetch if your data is coming from server
       }
     } catch (error) {
       console.error("Delete post error:", error);
@@ -54,76 +68,138 @@ export default function PostCard({
   };
 
   return (
-    <Card
-      sx={{
-        display: "flex",
-        width: { xs: 700, lg: 500 },
-        height: 250,
-        wordBreak: "break-word",
-      }}
-    >
-      {image?.url ? (
-        <CardMedia
-          component="img"
-          sx={{ width: 160 }}
-          image={image.url}
-          alt={title}
-        />
-      ) : (
+    <Grid size={{ xs: 12, lg: 6 }}>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          maxWidth: { xs: "100%", sm: 600, md: 700, lg: 500 },
+          width: "100%",
+          minHeight: { xs: 200, sm: 250 },
+          wordBreak: "break-word",
+          m: { xs: 0, sm: 1 },
+          boxShadow: 3,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {image?.url ? (
+          <CardMedia
+            component="img"
+            sx={{
+              width: { xs: "100%", sm: 160, md: 180 },
+              height: { xs: 150, sm: "auto" },
+              objectFit: { xs: "cover", sm: "contain" },
+            }}
+            image={image.url}
+            alt={title}
+          />
+        ) : (
+          <Box
+            sx={{
+              width: { xs: "100%", sm: 160, md: 180 },
+              height: { xs: 150, sm: 250 },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              bgcolor: blue[100],
+              p: { xs: 1, sm: 2 },
+            }}
+          >
+            <Typography
+              variant="h6"
+              textAlign="center"
+              sx={{
+                color: "black",
+                fontSize: { xs: "1rem", sm: "1.25rem" },
+              }}
+            >
+              {title}
+            </Typography>
+          </Box>
+        )}
         <Box
           sx={{
-            width: 160,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            bgcolor: blue[100],
-            p: 2,
+            flexDirection: "column",
+            flex: 1,
+            p: { xs: 1, sm: 2 },
           }}
         >
-          <Typography variant="h6" textAlign="center" sx={{ color: "black" }}>
-            {title}
-          </Typography>
-        </Box>
-      )}
-
-      <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {title}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
-            Category : {category?.title}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
-            Auther : {user?.firstName + " " + user?.lastName}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" ,mt: 2 }}>
-            {content.slice(0, 80)}
-            {content.length > 80 ? "..." : ""}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            size="small"
-            variant="contained"
-            sx={{textTransform: "capitalize"}}
-            onClick={() => router.push(`/post/${id}`)}
+          <CardContent sx={{ flex: 1 }}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              sx={{ fontSize: { xs: "1.1rem", sm: "1.5rem" } }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: "text.secondary",
+                mt: 1,
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+              }}
+            >
+              Category: {postCategory?.title}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: "text.secondary",
+                mt: 1,
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+              }}
+            >
+              Author:{" "}
+              <Link href={`/profile/${user.id}`}>
+                {user?.firstName + " " + user?.lastName}
+              </Link>
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: "text.secondary",
+                mt: 1,
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+              }}
+            >
+              {content.slice(0, 50)}
+              {content.length > 50 ? "..." : ""}
+            </Typography>
+          </CardContent>
+          <CardActions
+            sx={{
+              flexWrap: "wrap",
+              gap: 1,
+              justifyContent: { xs: "center", sm: "flex-start" },
+            }}
           >
-            Read More
-          </Button>
-          {(userInfo.id === user.id || userInfo.role === "admin") && (
             <Button
               size="small"
-              variant="contained"
-              color="error"
-              onClick={() => onDeletePost(id)}
-              sx={{textTransform: "capitalize"}}
+              variant="text"
+              sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+              color="secondary"
+              onClick={() => router.push(`/post/${id}`)}
             >
-              Delete Post
+              Read More
             </Button>
-          )}
-        </CardActions>
-      </Box>
-    </Card>
+            {(userInfo.id === user.id || userInfo.role === "admin") && (
+              <Button
+                size="small"
+                variant="outlined"
+                color="error"
+                onClick={onDeletePost}
+                sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+              >
+                Delete Post
+              </Button>
+            )}
+          </CardActions>
+        </Box>
+      </Card>
+    </Grid>
   );
 }

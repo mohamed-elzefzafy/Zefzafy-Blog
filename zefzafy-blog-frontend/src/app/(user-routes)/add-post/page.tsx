@@ -2,15 +2,18 @@
 import { useGetCategoriesQuery } from "@/redux/slices/api/categoryApiSlice";
 import { useCreatePostMutation } from "@/redux/slices/api/postApiSlice";
 import { IPostData } from "@/types/post";
+import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 import {
   Button,
   FormControl,
   FormHelperText,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
@@ -25,7 +28,7 @@ const AddPostPage = () => {
   const [createPost] = useCreatePostMutation();
   const [image, setImage] = useState<File | null>();
   const [category, setCategory] = useState("");
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categoriesResponse } = useGetCategoriesQuery();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -55,7 +58,7 @@ const AddPostPage = () => {
       reset();
       setImage(null);
       // setTimeout(() => {
-        router.push(`/`);
+      router.push(`/`);
       // }, 2000);
     } catch (error) {
       toast.error((error as { data: { message: string } })?.data?.message);
@@ -78,6 +81,15 @@ const AddPostPage = () => {
     >
       <Typography variant="h6" component="h2">
         Add Post
+        <Tooltip
+          title={"back to home page"}
+          placement="right-end"
+          enterDelay={200}
+        >
+          <IconButton onClick={() => router.push(`/`)}>
+            <KeyboardDoubleArrowRight sx={{ color: "primary.main" }} />
+          </IconButton>
+        </Tooltip>
       </Typography>
       <TextField
         type="text"
@@ -111,7 +123,7 @@ const AddPostPage = () => {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          {categories?.map((category) => (
+          {categoriesResponse?.categories?.map((category) => (
             <MenuItem value={category.id} key={category.id}>
               {category.title}
             </MenuItem>
@@ -144,11 +156,10 @@ const AddPostPage = () => {
         variant="contained"
         color="primary"
         sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
-        disabled={isSubmitting || !isValid}
+        disabled={isSubmitting}
       >
         Add Post
       </Button>
-  
     </Stack>
   );
 };

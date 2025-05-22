@@ -1,4 +1,10 @@
-import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateUserDto } from '../auth/dtos/update-user.dto';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -10,21 +16,49 @@ import { PostService } from 'src/post/post.service';
 @Injectable()
 export class UsersService {
   constructor(
-   @InjectRepository(UserEntity) private readonly userRepositry: Repository<UserEntity>,
-   private readonly cloudinaryService : CloudinaryService,
+    @InjectRepository(UserEntity)
+    private readonly userRepositry: Repository<UserEntity>,
+    private readonly cloudinaryService: CloudinaryService,
     @Inject(forwardRef(() => PostService))
-   private readonly postService : PostService,
+    private readonly postService: PostService,
+  ) {}
 
-  ){}
+  // public async findAll() {
+  //   return this.userRepositry.find();
+  // }
 
-  
+  public async findAll(page: number, limit: number) {
+    // Ensure page and limit are positive
+    const pageNumber = Math.max(1, page);
+    const limitNumber = Math.max(1, limit);
 
-  public async findAll() {
-    return this.userRepositry.find();
+    // Calculate skip (offset) for pagination
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Fetch paginated users and total count
+    const [users, total] = await this.userRepositry.findAndCount({
+      skip,
+      take: limitNumber,
+      order :{role : "ASC" , createdAt : "ASC"},
+    });
+
+    // Calculate total pages
+    const pagesCount = Math.ceil(total / limitNumber);
+
+    // Return response in desired format
+    return {
+      users,
+      pagination: {
+        total,
+        page: pageNumber,
+        limit: limitNumber,
+        pagesCount,
+      },
+    };
   }
 
   public async findOne(id: number) {
-    const user = await this.userRepositry.findOneBy({id});
+    const user = await this.userRepositry.findOneBy({ id });
     if (!user) {
       throw new NotFoundException(`User with id (${id}) not found`);
     }
@@ -32,24 +66,32 @@ export class UsersService {
   }
 
   public async remove(id: number) {
-   const user = await this.findOne(id);
-if (user.profileImage.public_id !== null) {
-  await this.cloudinaryService.removeImage(user.profileImage.public_id);
+    const user = await this.findOne(id);
+    if (user.profileImage.public_id !== null) {
+      await this.cloudinaryService.removeImage(user.profileImage.public_id);
+    }
+
+    const posts = await this.postService.findUserPosts(id);
+    console.log('posts---', posts);
+
+    let publicIds = [];
+if (posts.length > 0) {
+      posts.map((post) => {
+      if (post.image) {
+        publicIds.push(post.image.public_id);
+      }
+    });
+    console.log(publicIds);
 }
 
-const posts = await this.postService.findUserPosts(id);
-console.log(posts);
+  if (publicIds.length > 0) {
+      await this.cloudinaryService.removeMultipleImages(publicIds);
+  }
+    await this.userRepositry.remove(user);
+    return { message: `User with id (${id}) was removed` };
+  }
 
-let publicIds =[];
-posts.map(post => {
- if (post.image) {
-   publicIds.push(post.image.public_id) ;
- }
-});
-console.log(publicIds);
-
-await this.cloudinaryService.removeMultipleImages(publicIds);
-  await this.userRepositry.remove(user);
-   return {message : `User with id (${id}) was removed`}
+  async getUsersCount() {
+    return this.userRepositry.count();
   }
 }

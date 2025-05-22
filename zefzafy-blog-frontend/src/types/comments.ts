@@ -1,15 +1,21 @@
 import { IUserInfo } from "./auth";
-import { IPost } from "./post";
+import { IPost, Pagination } from "./post";
 
-export interface IComment {
+export interface ICommentDto {
   text: string;
 }
 
-export interface ICommentResponse {
+export interface IComments {
   id: number;
   text: string;
   post: IPost;
   user: IUserInfo;
   createdAt: string;
   updatedAt: string;
+}
+
+
+export interface ICommentsResponse {
+  comments: IComments[] ;
+  pagination: Pagination;
 }

@@ -10,6 +10,13 @@ export interface IPostData {
   image?: CloudinaryObject;
 }
 
+export interface IPostData2 {
+  title: string;
+  content: string;
+  category: number;
+  image?: CloudinaryObject;
+}
+
 export interface IPost {
   id: number;
   title: string;
@@ -20,6 +27,7 @@ export interface IPost {
   updatedAt: string;
   user :IUserInfo;
   comments : ICommentResponse[];
+  likes : IUserInfo[];
 }
 
 export interface IPostResponse {

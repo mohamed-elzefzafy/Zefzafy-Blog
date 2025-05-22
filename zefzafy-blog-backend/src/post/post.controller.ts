@@ -23,7 +23,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/auth/decorator/current-user.decorator';
 import { JwtPayloadType } from 'src/common/types';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { PAGE_LIMIT } from 'src/common/constants';
+import { PAGE_LIMIT, PAGE_LIMIT_ADMIN } from 'src/common/constants';
 
 @Controller('post')
 export class PostController {
@@ -47,9 +47,21 @@ export class PostController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('search') search: string = '',
     @Query('category') category: string = '',
+    @Query('user') user: string = '',
   ) {
     const limit  = PAGE_LIMIT;
-    return this.postService.findAll({ page, limit, search , category });
+    return this.postService.findAll({ page, limit, search , category , user});
+  }
+
+  @Get("admin")
+  findAllAdmin(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('search') search: string = '',
+    @Query('category') category: string = '',
+    @Query('user') user: string = '',
+  ) {
+    const limit  = PAGE_LIMIT_ADMIN;
+    return this.postService.findAll({ page, limit, search , category , user});
   }
 
   @Get(':id')
@@ -91,6 +103,12 @@ export class PostController {
     @CurrentUser("user") user: JwtPayloadType,
   ) {
     return this.postService.toggleLikePost(id , user);
+  }
+
+  @Get("getPostsCount")
+    @Roles([UserRoles.ADMIN])
+  getPostsCount(){
+    return this.postService.getPostsCount();
   }
 
 }

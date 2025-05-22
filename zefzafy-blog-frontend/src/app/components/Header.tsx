@@ -1,12 +1,10 @@
 "use client";
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -19,35 +17,25 @@ import { useRouter } from "next/navigation";
 import { common } from "@mui/material/colors";
 import { useLogoutMutation } from "@/redux/slices/api/authApiSlice";
 import { logoutAction } from "@/redux/slices/authSlice";
-
-const pages = ["Products", "Pricing", "Blog"];
+import Link from "next/link";
+import { useState } from "react";
 
 function Header() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
   const { userInfo } = useAppSelector((state) => state?.auth);
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   const handleLogout = async () => {
     try {
       await logout({}).unwrap();
@@ -65,160 +53,125 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
-
+        <Toolbar
+          disableGutters
+          sx={{
+            px: { xs: 1, sm: 2 }, // Responsive padding
+            minHeight: { xs: 48, sm: 64 }, // Smaller toolbar height on mobile
+          }}
+        >
+          {/* Logo */}
           <Box
-          onClick={() => router.push("/")}
-            sx={{
-              display: { xs: "none", md: "flex" },
-              marginRight: "5px",
-              borderRadius: "10px",
-              overflow: "hidden", // Ensures borderRadius applies correctly
-            }}
-          
-          >
-            <Image alt="Zef-Blog" src="/zef-blog.jpg" width={50} height={50} />
-          </Box>
-          <Typography
-            variant="body1"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 400,
-              color: "inherit",
-              textDecoration: "none",
-            }}
             onClick={() => router.push("/")}
-          >
-            Zef-Blog
-          </Typography>
-
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-
-          <Box
             sx={{
-              display: { xs: "flex", md: "none" },
-              marginRight: "5px",
-              borderRadius: "10px",
-              overflow: "hidden", // Ensures borderRadius applies correctly
+              display: "flex",
+              alignItems: "center",
+              mr: { xs: 1, sm: 2 },
+              cursor: "pointer",
             }}
           >
-            <Image alt="Zef-Blog" src="/zef-blog.jpg" width={30} height={30} />
+            <Image
+              alt="Zef-Blog"
+              src="/zef-blog.jpg"
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{
+                width: "clamp(30px, 8vw, 40px)", // Responsive logo size
+                height: "auto",
+                borderRadius: "10px",
+              }}
+            />
           </Box>
+
+          {/* Title */}
           <Typography
-            variant="body1"
+            variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={Link}
+            href="/"
             sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
               fontFamily: "monospace",
-              fontWeight: 400,
+              fontWeight: 500,
               color: "inherit",
               textDecoration: "none",
+              fontSize: { xs: "1rem", sm: "1.25rem" }, // Responsive font size
+              mr: 2,
             }}
           >
             Zef-Blog
           </Typography>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
-          <Box sx={{flexGrow : 1}}/>
-          <Box sx={{ flexGrow: 0, display: "flex", gap: 1 }}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyItems: "center",
-                alignItems: "center",
-              }}
-            >
-              <ToggleDarkLightIcons fontSize="20px" />
-            </Box>
+          {/* Spacer */}
+          <Box sx={{ flexGrow: 1 }} />
 
+          {/* Right-side Actions */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 0.5, sm: 1 }, // Responsive gap
+            }}
+          >
+            {/* Theme Toggle */}
+            <ToggleDarkLightIcons fontSize="20px" />
+
+            {/* Auth Buttons (Not Logged In) */}
             {!userInfo.email && (
               <>
                 <Button
                   onClick={() => router.push("/auth/register")}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "0.75rem", sm: "0.875rem" }, // Responsive font
+                    px: { xs: 1, sm: 2 }, // Responsive padding
+                  }}
                 >
                   Register
                 </Button>
-
                 <Button
                   onClick={() => router.push("/auth/login")}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                    px: { xs: 1, sm: 2 },
+                  }}
                 >
                   Login
                 </Button>
               </>
             )}
 
-            {userInfo.email && userInfo.role === "user" && (
+            {/* User Menu (Logged In) */}
+            {userInfo.email && (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Typography
-                      variant="body1"
-                      sx={{ mr: 1, color: common.white }}
+                      variant="body2"
+                      sx={{
+                        mr: 1,
+                        color: common.white,
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                        display: { xs: "none", sm: "block" }, // Hide name on small screens
+                      }}
                     >
-                      {userInfo?.firstName}{" "}
+                      {userInfo?.firstName}
                     </Typography>
-                    <Avatar alt="Remy Sharp" src={userInfo.profileImage.url} />
+                    <Avatar
+                      alt={userInfo.firstName}
+                      src={userInfo.profileImage.url}
+                      sx={{
+                        width: { xs: 30, sm: 40 },
+                        height: { xs: 30, sm: 40 },
+                      }}
+                    />
                   </IconButton>
                 </Tooltip>
                 <Menu
-                  sx={{ mt: "45px" }}
+                  sx={{ mt: { xs: "40px", sm: "45px" } }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
@@ -235,61 +188,31 @@ function Header() {
                 >
                   {!userInfo.isAccountVerified && (
                     <MenuItem onClick={handleVerifyYourAccount}>
-                      <Typography sx={{ textAlign: "center" }}>
+                      <Typography
+                        sx={{
+                          textAlign: "center",
+                          fontSize: { xs: "0.875rem", sm: "1rem" },
+                        }}
+                      >
                         Verify your account
                       </Typography>
                     </MenuItem>
                   )}
 
-                  <MenuItem
-                    onClick={handleCloseUserMenu}
-                    disabled={!userInfo.isAccountVerified}
-                  >
-                    <Typography sx={{ textAlign: "center" }}>
-                      User Dashboard
-                    </Typography>
-                  </MenuItem>
-
-                  <MenuItem onClick={handleLogout}>
-                    <Typography sx={{ textAlign: "center" }}>Logout</Typography>
-                  </MenuItem>
-                </Menu>
-              </>
-            )}
-
-            {userInfo.email && userInfo.role === "admin" && (
-              <>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Typography
-                      variant="body1"
-                      sx={{ mr: 1, color: common.white }}
+                  {userInfo.role === "admin" && (
+                    <MenuItem
+                      onClick={handleCloseUserMenu}
+                      disabled={!userInfo.isAccountVerified}
                     >
-                      {userInfo?.firstName}{" "}
-                    </Typography>
-                    <Avatar alt="Remy Sharp" src={userInfo.profileImage.url} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {!userInfo.isAccountVerified && (
-                    <MenuItem onClick={handleVerifyYourAccount}>
-                      <Typography sx={{ textAlign: "center" }}>
-                        Verify your account
+                      <Typography
+                      href={"/admin-dashboard"}
+                        sx={{
+                          textAlign: "center",
+                          fontSize: { xs: "0.875rem", sm: "1rem" },
+                        }}
+                        component={Link}
+                      >
+                        Admin Dashboard
                       </Typography>
                     </MenuItem>
                   )}
@@ -298,13 +221,29 @@ function Header() {
                     onClick={handleCloseUserMenu}
                     disabled={!userInfo.isAccountVerified}
                   >
-                    <Typography sx={{ textAlign: "center" }}>
-                      Admin Dashboard
+                    <Typography
+                      href={`/profile/${userInfo.id}`}
+                      component={Link}
+                      sx={{
+                        textAlign: "center",
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                        textDecoration: "none",
+                        color: "inherit",
+                      }}
+                    >
+                      Profile
                     </Typography>
                   </MenuItem>
 
                   <MenuItem onClick={handleLogout}>
-                    <Typography sx={{ textAlign: "center" }}>Logout</Typography>
+                    <Typography
+                      sx={{
+                        textAlign: "center",
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                      }}
+                    >
+                      Logout
+                    </Typography>
                   </MenuItem>
                 </Menu>
               </>
@@ -315,4 +254,5 @@ function Header() {
     </AppBar>
   );
 }
+
 export default Header;

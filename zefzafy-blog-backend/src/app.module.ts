@@ -17,6 +17,7 @@ import { PostModule } from './post/post.module';
 import { PostEntity } from './post/entities/post.entity';
 import { CommentModule } from './comment/comment.module';
 import { CommentEntity } from './comment/entities/comment.entity';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -37,7 +38,11 @@ import { CommentEntity } from './comment/entities/comment.entity';
         synchronize: true, // Disable in production to avoid unintended schema changes
         retryAttempts: 3,
         retryDelay: 3000,
-      }), 
+        extra: {
+          max: 10, // Maximum number of connections
+          idleTimeoutMillis: 30000,
+        },
+      }),
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -68,5 +73,6 @@ import { CommentEntity } from './comment/entities/comment.entity';
     PostModule,
     CommentModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

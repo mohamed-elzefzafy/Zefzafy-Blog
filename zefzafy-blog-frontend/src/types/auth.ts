@@ -4,6 +4,17 @@ export interface UserRegister {
     email: string,
     password: string,
   }
+
+  export interface IUserUpdate {
+    firstName?: string,
+    lastName?: string,
+    password?: string,
+  }
+  export interface IUserUpdate2 {
+    firstName: string,
+    lastName: string,
+    password: string,
+  }
 export interface UserLogin {
     email: string,
     password: string,

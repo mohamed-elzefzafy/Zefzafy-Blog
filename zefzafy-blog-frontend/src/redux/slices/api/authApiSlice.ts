@@ -1,3 +1,4 @@
+import { IUserInfo } from "@/types/auth";
 import { apiSlice } from "./apiSlice";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
@@ -17,6 +18,23 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    getOneUser: builder.query<IUserInfo, string | void>({
+      query: (id) => ({
+        url: `/api/v1/users/${id}`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["User"],
+    }),
+
+      updateUser: builder.mutation({
+      query: ( payLoad ) => ({
+        url: `/api/v1/auth`,
+        method: "PATCH",
+        body: payLoad,
+      }),
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: `/api/v1/auth/logout`,
@@ -34,7 +52,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `/api/v1/auth/verify-account`,
         method: "POST",
-        body : data
+        body: data,
       }),
     }),
 
@@ -42,14 +60,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `/api/v1/auth/reset-password`,
         method: "POST",
-        body : data
+        body: data,
       }),
     }),
     updatePassword: builder.mutation({
       query: (data) => ({
         url: `/api/v1/auth/validateVerificationCode`,
         method: "POST",
-        body : data
+        body: data,
       }),
     }),
   }),
@@ -62,5 +80,7 @@ export const {
   useVerifyAccountMutation,
   useEnterVerifyCodeMutation,
   useResetPasswordMutation,
-  useUpdatePasswordMutation
+  useUpdatePasswordMutation,
+  useGetOneUserQuery,
+  useUpdateUserMutation,
 } = usersApiSlice;

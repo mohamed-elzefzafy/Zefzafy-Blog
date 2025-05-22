@@ -71,8 +71,6 @@ export class PostService {
   //     .leftJoinAndSelect('post.user', 'user')
   //     .leftJoinAndSelect('post.comments', 'comments');
 
-  
-
   //   if (category) {
   //     if (search) {
   //       query.andWhere('category.id = :category', { category });
@@ -100,47 +98,57 @@ export class PostService {
   //   };
   // }
 
-  async findAll({ 
+  async findAll({
     page,
     limit,
     search,
     category,
+    user,
   }: {
     page: number;
     limit: number;
     search: string;
     category: string;
+    user: string;
   }) {
     const query = this.postRepositry
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.category', 'category')
       .leftJoinAndSelect('post.user', 'user')
       .leftJoinAndSelect('post.comments', 'comments');
-  
+
     // استخدم متغير لتجميع الشروط
     const whereConditions: string[] = [];
     const parameters: Record<string, any> = {};
-  
+
     if (search) {
-      whereConditions.push('(post.title ILIKE :search OR post.content ILIKE :search)');
+      whereConditions.push(
+        '(post.title ILIKE :search OR post.content ILIKE :search)',
+      );
       parameters.search = `%${search}%`;
     }
-  
+
     if (category) {
       whereConditions.push('category.id = :category');
       parameters.category = category;
     }
-  
+    if (user) {
+      whereConditions.push('user.id = :user');
+      parameters.user = user;
+    }
+
     if (whereConditions.length > 0) {
       query.where(whereConditions.join(' AND '), parameters);
     }
-  
-    query.orderBy('post.createdAt', 'DESC'); 
+
+    query
+      .orderBy('post.likesLength', 'DESC')
+      .addOrderBy('post.createdAt', 'DESC');
     query.skip((page - 1) * limit).take(limit);
-  
+
     const [posts, total] = await query.getManyAndCount();
     const pagesCount = Math.ceil(total / limit);
-  
+
     return {
       posts,
       pagination: {
@@ -151,12 +159,17 @@ export class PostService {
       },
     };
   }
-  
+
   public async findOne(id: number) {
     const post = await this.postRepositry.findOne({
       where: { id },
-      relations: { user: true, likes: true, comments: {user : true }, category: true },
-      order :{comments : {createdAt : 'ASC'}}
+      relations: {
+        user: true,
+        likes: true,
+        comments: { user: true },
+        category: true,
+      },
+      order: { comments: { createdAt: 'ASC' } },
     });
     if (!post) throw new NotFoundException('post not found');
     return post;
@@ -226,7 +239,7 @@ export class PostService {
       where: { user: { id: user.id } },
       relations: { user: true },
     });
-    console.log('posts', posts);
+  
 
     return posts;
   }
@@ -243,6 +256,11 @@ export class PostService {
     } else {
       post.likes.push({ id: user.id } as UserEntity);
     }
+    post.likesLength = post.likes.length;
     return this.postRepositry.save(post);
+  }
+
+    async getPostsCount() {
+    return this.postRepositry.count();
   }
 }
