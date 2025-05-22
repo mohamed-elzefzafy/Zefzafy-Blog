@@ -23,11 +23,10 @@ import { useRouter } from "next/navigation";
 const AdminPostsPage = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, refetch } = useGetPostsQuery(`?page=${currentPage}`);
+  const { data } = useGetPostsQuery(`?page=${currentPage}`);
   const [deletePostAdminPage] = useDeletePostAdminPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const columns: GridColDef[] = [
     {

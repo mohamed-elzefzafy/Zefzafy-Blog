@@ -1,16 +1,11 @@
 "use client";
 import { Paper, Typography, Box, Link, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import PeopleIcon from "@mui/icons-material/People";
-import CategoryIcon from "@mui/icons-material/Category";
 import {
   Book,
   Category,
   Comment,
   Group,
-  PermMedia,
-  Receipt,
-  TabletMac,
 } from "@mui/icons-material";
 import { useGetAllCountsQuery } from "@/redux/slices/api/utilsApiSlice";
 

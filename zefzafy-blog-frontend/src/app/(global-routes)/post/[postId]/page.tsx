@@ -9,9 +9,16 @@ import EditPostButton from "./_components/EditPostButton";
 import Link from "next/link";
 import SearchParamComponent from "./_components/SearchParamComponent";
 
-const PostPage = async ({ params }: { params: { postId: string } }) => {
+interface PostPageProps {
+  params: {
+    postId: string;
+  };
+}
+
+const PostPage = async ({ params }: PostPageProps) => {
+  
   const { data: post } = await axiosRequest.get<IPost>(
-    `/api/v1/post/${params.postId}`
+    `/api/v1/post/${params?.postId}`
   );
 
   return (
@@ -24,11 +31,11 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
           minHeight: "calc(100vh - 68.5px)",
         }}
       >
-        <SearchParamComponent  returnPath={"/admin-dashboard/posts"}/>
+        <SearchParamComponent returnPath={"/admin-dashboard/posts"} />
         <Typography component="h1" variant="h4">
           {post.title}
         </Typography>
-        {post.image?.url ? (
+        {post?.image?.url ? (
           <Box
             sx={{
               width: { xs: "100%", md: 1000 },

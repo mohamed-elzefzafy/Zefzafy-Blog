@@ -3,7 +3,6 @@ import { useState } from "react";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import {
   Box,
-  Button,
   IconButton,
   Stack,
   Typography,
@@ -11,9 +10,6 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
-import {
-  useDeletePostAdminPageMutation,
-} from "@/redux/slices/api/postApiSlice";
 import PaginationComponent from "@/app/components/PaginationComponent";
 import toast from "react-hot-toast";
 import swal from "sweetalert";

@@ -14,10 +14,6 @@ import PaginationComponent from "@/app/components/PaginationComponent";
 import toast from "react-hot-toast";
 import swal from "sweetalert";
 import { useRouter } from "next/navigation";
-import {
-  useDeleteCategoryAdminPageMutation,
-  useGetCategoriesAdminQuery,
-} from "@/redux/slices/api/categoryApiSlice";
 import Link from "next/link";
 import {
   useDeleteCommentAdminAdminDashPageMutation,

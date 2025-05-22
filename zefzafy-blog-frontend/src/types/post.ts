@@ -1,7 +1,7 @@
 import { UserInfo } from "os";
 import { CloudinaryObject, IUserInfo } from "./auth";
 import { ICategory } from "./category";
-import { IComment, ICommentResponse } from "./comments";
+import { IComments, ICommentsResponse } from "./comments";
 
 export interface IPostData {
   title: string;
@@ -26,7 +26,7 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
   user :IUserInfo;
-  comments : ICommentResponse[];
+  comments : IComments[];
   likes : IUserInfo[];
 }
 
