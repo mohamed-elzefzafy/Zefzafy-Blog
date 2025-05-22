@@ -35,7 +35,7 @@ import { AppController } from './app.controller';
           PostEntity,
           CommentEntity,
         ], // Add your entities here
-        synchronize: true, // Disable in production to avoid unintended schema changes
+        synchronize: false, // Disable in production to avoid unintended schema changes
         retryAttempts: 3,
         retryDelay: 3000,
         extra: {
