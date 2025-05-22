@@ -41,7 +41,7 @@ const EditPostPage = ({ params }: { params: Promise<{ postId: string }> }) => {
 
   useEffect(() => {
     if (post?.category?.id) {
-      setCategory(post.category.id);
+      setCategory(`${post.category.id}`);
     }
   }, [post]);
 
@@ -75,7 +75,7 @@ const EditPostPage = ({ params }: { params: Promise<{ postId: string }> }) => {
       setValue("title", post.title);
       setValue("content", post.content);
       setValue("category", Number(post?.category.id));
-      setCategory(post.category.id);
+      setCategory(`${post.category.id}`);
     }
   }, [post, setValue]);
 
