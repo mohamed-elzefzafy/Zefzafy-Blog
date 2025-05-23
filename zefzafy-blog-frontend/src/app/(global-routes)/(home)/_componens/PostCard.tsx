@@ -75,7 +75,7 @@ export default function PostCard({
           flexDirection: { xs: "column", sm: "row" },
           maxWidth: { xs: "100%", sm: 600, md: 700, lg: 500 },
           width: "100%",
-          minHeight: { xs: 200, sm: 250 },
+          height: { xs: 200, sm: 250 },
           wordBreak: "break-word",
           m: { xs: 0, sm: 1 },
           boxShadow: 3,
