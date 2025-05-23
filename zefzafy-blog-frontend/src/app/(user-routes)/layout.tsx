@@ -6,13 +6,15 @@ import { ReactNode, useEffect } from 'react'
 const UserLayout = ({children} : {children : ReactNode}) => {
     const router = useRouter();
     const { userInfo } = useAppSelector((state) => state.auth);
+if (!userInfo.email) {
+  return router.push("/");
+} 
 
-
-    useEffect(() =>{
+    // useEffect(() =>{
       if (!userInfo.isAccountVerified) {
         return router.push("/auth/verifyAccount");
       }
-    },[router, userInfo.isAccountVerified])
+    // },[router, userInfo.isAccountVerified])
   
   return (
   <>

@@ -15,7 +15,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import Image from "next/image";
 import { useGetCategoriesQuery } from "@/redux/slices/api/categoryApiSlice";
-import { useDeletePostHomePageMutation, useGetPostsQuery } from "@/redux/slices/api/postApiSlice";
+import {
+  useDeletePostHomePageMutation,
+  useGetPostsQuery,
+} from "@/redux/slices/api/postApiSlice";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createSearchKeywordAction } from "@/redux/slices/searchSlice";
@@ -67,7 +70,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Home() {
   const router = useRouter();
-      const searcParam = useSearchParams();
+  const searcParam = useSearchParams();
   const searchPramQuery = searcParam.get("CategoryIdfromAdminDashBoard");
   const dispatch = useAppDispatch();
   const { searchKeyWord } = useAppSelector((state) => state.search);
@@ -75,8 +78,8 @@ export default function Home() {
   const { data: categoriesResponse } = useGetCategoriesQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategory] = useState(searchPramQuery || "");
-    const [deletePostHomePage] = useDeletePostHomePageMutation();
-
+  const [deletePostHomePage] = useDeletePostHomePageMutation();
+  const { userInfo } = useAppSelector((state) => state.auth);
 
   const { data: postsResponse, refetch } = useGetPostsQuery(
     `?search=${searchKeyWord || ""}&page=${currentPage}&category=${category}`
@@ -89,8 +92,6 @@ export default function Home() {
     dispatch(createSearchKeywordAction(""));
     refetch();
   };
-
-
 
   return (
     <Container>
@@ -161,7 +162,7 @@ export default function Home() {
             </FormControl>
           </Grid>
         </Grid>
-        <SearchParamComponent returnPath="/admin-dashboard/categories"/>
+        <SearchParamComponent returnPath="/admin-dashboard/categories" />
         <Box
           sx={{
             width: "100%",
@@ -183,26 +184,28 @@ export default function Home() {
             style={{ width: "100%", height: "100%" }}
           />
         </Box>
-        <Box
-          sx={{
-            py: 2,
-            display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" },
-          }}
-        >
-          <Button
-            variant="contained"
-            size="medium"
+        {userInfo.email && (
+          <Box
             sx={{
-              width: { xs: "100%", sm: "200px" },
-              textTransform: "capitalize",
-              maxWidth: "250px",
+              py: 2,
+              display: "flex",
+              justifyContent: { xs: "center", md: "flex-start" },
             }}
-            onClick={() => router.push("/add-post")}
           >
-            Add Post
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              size="medium"
+              sx={{
+                width: { xs: "100%", sm: "200px" },
+                textTransform: "capitalize",
+                maxWidth: "250px",
+              }}
+              onClick={() => router.push("/add-post")}
+            >
+              Add Post
+            </Button>
+          </Box>
+        )}
         {postsResponse && (
           <PostsComponent
             posts={postsResponse.posts}
