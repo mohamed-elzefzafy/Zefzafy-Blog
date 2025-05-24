@@ -169,6 +169,7 @@ export class AuthService {
   public async verifyAccount(
     verificationAccountDto: VerificationAccountDto,
     user: JwtPayloadType,
+    res: Response
   ) {
     const exisUser = await this.userRepositry.findOne({
       where: {
@@ -185,6 +186,23 @@ export class AuthService {
     user.isAccountVerified = true;
     exisUser.verificationCode = null;
     await this.userRepositry.save(exisUser);
+    
+        const payLoad: JwtPayloadType = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      isAccountVerified: user.isAccountVerified,
+    };
+    const token = await this.jwtService.signAsync(payLoad, {
+      secret: this.config.get<string>('JWT_SECRET_KEY'),
+    });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: this.config.get<string>('NODE_ENV') === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
     return { message: 'Account verified successfully', user : exisUser };
   }
 

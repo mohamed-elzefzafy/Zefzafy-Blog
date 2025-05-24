@@ -73,8 +73,9 @@ export class AuthController {
   public async verifyAccount(
     @Body() verificationAccountDto: VerificationAccountDto,
     @CurrentUser() user: JwtPayloadType,
+    @Res({ passthrough: true }) res: Response,
   ) {
-    return this.authService.verifyAccount(verificationAccountDto, user);
+    return this.authService.verifyAccount(verificationAccountDto, user , res);
   }
 
   @Get('current-user')

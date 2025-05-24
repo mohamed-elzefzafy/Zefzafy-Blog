@@ -21,6 +21,8 @@ const ToggleLikePost = ({ post }: { post: IPost }) => {
       console.error(error);
     }
   };
+  console.log(userInfo);
+  
   return (
       <Stack
       flexDirection={"row"}

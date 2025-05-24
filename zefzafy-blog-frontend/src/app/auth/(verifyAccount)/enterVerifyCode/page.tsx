@@ -35,6 +35,8 @@ const EnterVerifyCode = () => {
       const { user } = await enterVerifyCode(values).unwrap();
       toast.success("Your account has been verified successfully");
       dispatch(setCredentials({ ...user }));
+      console.log(user);
+      
       setIsVerified(true);
       reset();
     } catch (error) {
