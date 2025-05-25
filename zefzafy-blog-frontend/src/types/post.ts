@@ -26,6 +26,7 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
   user :IUserInfo;
+  reactsLength : number,
   comments : IComments[];
   likes : IUserInfo[];
 }

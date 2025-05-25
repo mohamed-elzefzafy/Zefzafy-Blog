@@ -89,7 +89,12 @@ export const commentApiSlice = apiSlice.injectEndpoints({
           },
           invalidatesTags: (result, error, { id }) => [{ type: "Comment", id }],
         }),
-
+    toggleLikeComment: builder.mutation({
+      query: (commentId) => ({
+        url: `/api/v1/comment/like-comment/${commentId}`,
+        method: "PUT",
+      }),
+    }),
 
   }),
 });
@@ -101,4 +106,5 @@ export const {
   useDeleteCommentByAdminMutation,
   useDeleteCommentAdminAdminDashPageMutation,
   useGetCommentsAdminQuery,
+  useToggleLikeCommentMutation
 } = commentApiSlice;

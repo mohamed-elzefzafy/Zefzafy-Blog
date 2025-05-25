@@ -12,6 +12,8 @@ import { PostService } from 'src/post/post.service';
 import { JwtPayloadType } from 'src/common/types';
 import { Roles } from 'src/auth/decorator/Roles.decorator';
 import { UserRoles } from 'src/common/enums/roles.enum';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CommentService {
@@ -19,7 +21,7 @@ export class CommentService {
     @InjectRepository(CommentEntity)
     private readonly commentRepository: Repository<CommentEntity>,
     private readonly postService: PostService,
-    // private readonly userService : UserService,
+    private readonly userService : UsersService,
   ) {}
   public async create(
     createCommentDto: CreateCommentDto,
@@ -45,7 +47,7 @@ export class CommentService {
     const [comments, total] = await this.commentRepository.findAndCount({
       skip,
       take: limitNumber,
-      relations : {post :true}
+      relations: { post: true },
     });
 
     const pagesCount = Math.ceil(total / limitNumber);
@@ -63,7 +65,7 @@ export class CommentService {
   public async findOne(id: number) {
     const comment = await this.commentRepository.findOne({
       where: { id },
-      relations: { post: true, user: true },
+      relations: { post: true, user: true ,likes :true },
     });
     if (!comment) throw new NotFoundException('comment not found');
     return comment;
@@ -115,5 +117,20 @@ export class CommentService {
 
   async getCommentsCount() {
     return this.commentRepository.count();
+  }
+
+  public async toggleLikeComment(id: number, user: JwtPayloadType) {
+    const comment = await this.findOne(id);
+    if (!comment) throw new NotFoundException('comment not found');
+    // const fullUser = await this.usersService.findOne(user.id);
+    // console.log("jhjhj1" ,comment.likes);
+    if (!comment.likes) comment.likes = [];
+
+    if (comment.likes.find(like => like.id === user.id)) {
+      comment.likes = comment.likes.filter((like) => like.id !== user.id);
+    } else {
+      comment.likes.push({ id: user.id } as UserEntity);
+    }
+    return this.commentRepository.save(comment);
   }
 }

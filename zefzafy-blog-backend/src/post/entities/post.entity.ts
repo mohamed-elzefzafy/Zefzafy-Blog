@@ -37,7 +37,7 @@ export class PostEntity {
   image: { url: string; public_id: string };
 
   @Column({ type: 'int', default: 0 })
-  likesLength: number;
+  reactsLength: number;
 
   @ManyToMany(() => UserEntity, (user) => user.likedPosts)
   @JoinTable({ name: 'liked_posts' })

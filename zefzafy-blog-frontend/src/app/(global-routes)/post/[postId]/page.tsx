@@ -9,11 +9,12 @@ import EditPostButton from "./_components/EditPostButton";
 import Link from "next/link";
 import SearchParamComponent from "./_components/SearchParamComponent";
 
-
- 
-const PostPage = async ({ params }: { params: Promise<{ postId: string }> })=> {
-
-  if (!(await params).postId) return
+const PostPage = async ({
+  params,
+}: {
+  params: Promise<{ postId: string }>;
+}) => {
+  if (!(await params).postId) return;
   const { data: post } = await axiosRequest.get<IPost>(
     `/api/v1/post/${(await params).postId}`
   );

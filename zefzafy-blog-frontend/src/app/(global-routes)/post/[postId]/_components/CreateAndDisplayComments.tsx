@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import LikesNamesModal from "./LikesNamesModal";
+import ToggleLikeComment from "./ToggleLikeComment";
 
 const CreateAndDisplayComments = ({ post }: { post: IPost }) => {
   const router = useRouter();
@@ -98,6 +100,10 @@ const CreateAndDisplayComments = ({ post }: { post: IPost }) => {
       console.error(error);
     }
   };
+
+
+    const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
   return (
     <>
       {userInfo.email && (
@@ -203,12 +209,16 @@ const CreateAndDisplayComments = ({ post }: { post: IPost }) => {
               </Stack>
             ) : (
               // Display mode
-              <Typography variant="body1" sx={{ mb: "5px" }}>
+              <>
+              <Typography variant="body1" sx={{ mb: "2px" }}>
                 {comment.text}
               </Typography>
+              <ToggleLikeComment comment={comment}/>
+              </>
             )}
             {userInfo.id === comment.user.id && (
-              <Stack sx={{ flexDirection: "row", gap: 4, mt: 2 }}>
+              
+              <Stack sx={{ flexDirection: "row", gap: 4, mt: 3  }}>
                 <Edit
                   color="info"
                   sx={{ cursor: "pointer" }}
@@ -224,7 +234,7 @@ const CreateAndDisplayComments = ({ post }: { post: IPost }) => {
             {userInfo.role === "admin" && comment.user.id !== userInfo.id && (
               <Delete
                 color="error"
-                sx={{ cursor: "pointer" }}
+                sx={{ cursor: "pointer" ,mt:3}}
                 onClick={() => onDeleteCommentByAdmin(comment.id)}
               />
             )}

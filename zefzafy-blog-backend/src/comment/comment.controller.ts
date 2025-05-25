@@ -9,6 +9,7 @@ import {
   UseGuards,
   ParseIntPipe,
   Query,
+  Put,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -76,6 +77,16 @@ export class CommentController {
   removeByAdmin(@Param('id', ParseIntPipe) id: number) {
     return this.commentService.removeByAdmin(id);
   }
+
+    @Put('like-comment/:id')
+    @Roles([UserRoles.USER, UserRoles.ADMIN])
+    @UseGuards(AuthGuard)
+    toggleLikePost(
+      @Param('id', ParseIntPipe) id: number,
+      @CurrentUser('user') user: JwtPayloadType,
+    ) {
+      return this.commentService.toggleLikeComment(id, user);
+    }
 
   // @Get('getCommentsCount')
   // @Roles([UserRoles.ADMIN])

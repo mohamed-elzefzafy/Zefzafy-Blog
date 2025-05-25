@@ -10,14 +10,16 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { array } from "zod";
 import LikesNamesModal from "./LikesNamesModal";
+import { IComments } from "@/types/comments";
+import { useToggleLikeCommentMutation } from "@/redux/slices/api/commentApiSlice";
 
-const ToggleLikePost = ({ post }: { post: IPost }) => {
+const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
   const router = useRouter();
-  const [toggleLikePost] = useToggleLikePostMutation();
+  const [toggleLikeComment] = useToggleLikeCommentMutation();
   const { userInfo } = useAppSelector((state) => state.auth);
   const onToggleLikePost = async () => {
     try {
-      await toggleLikePost(post.id).unwrap();
+      await toggleLikeComment(comment.id).unwrap();
       // toast.success("you have liked the post successfully");
       router.refresh();
     } catch (error) {
@@ -41,21 +43,21 @@ const ToggleLikePost = ({ post }: { post: IPost }) => {
       {/* likes modal  */}
 
       <LikesNamesModal
-        data={post}
+        data={comment}
         open={open}
         setOpen={setOpen}
-        likedType="post"
+        likedType="comment"
       />
 
-      {post?.likes?.find((like) => like.id === userInfo.id) ? (
+      {comment?.likes?.find((like) => like.id === userInfo.id) ? (
         <>
           {userInfo.email && userInfo.isAccountVerified && (
             <ThumbUpAlt
               sx={{
                 color: "info.main",
-                fontSize: "40px",
+                fontSize: "30px",
                 cursor: "pointer",
-                "&:hover": { fontSize: "41px" },
+                "&:hover": { fontSize: "31px" },
                 transition: "all 0.3s ease-in-out",
               }}
               onClick={onToggleLikePost}
@@ -68,9 +70,9 @@ const ToggleLikePost = ({ post }: { post: IPost }) => {
             <ThumbUpOffAlt
               sx={{
                 color: "info.main",
-                fontSize: "40px",
+                fontSize: "30px",
                 cursor: "pointer",
-                "&:hover": { fontSize: "41px" },
+                "&:hover": { fontSize: "31px" },
                 transition: "all 0.3s ease-in-out",
               }}
               onClick={onToggleLikePost}
@@ -83,7 +85,7 @@ const ToggleLikePost = ({ post }: { post: IPost }) => {
         sx={{ fontWeight: "bold", fontSize: "20px", cursor: "pointer" }}
         onClick={() => {
           handleOpen();
-          post.likes.map((like) =>
+          comment.likes.map((like) =>
             console.log(like.firstName + " " + like.lastName)
           );
         }}
@@ -93,12 +95,12 @@ const ToggleLikePost = ({ post }: { post: IPost }) => {
           component={"span"}
           sx={{ color: "error.main", fontWeight: "bold", fontSize: "20px" }}
         >
-          {post?.likes?.length}
+          {comment?.likes?.length}
         </Typography>{" "}
-        {post?.likes?.length > 1 ? "likes" : "like"}
+        {comment?.likes?.length > 1 ? "likes" : "like"}
       </Typography>
     </Stack>
   );
 };
 
-export default ToggleLikePost;
+export default ToggleLikeComment;

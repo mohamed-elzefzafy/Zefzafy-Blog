@@ -49,19 +49,19 @@ export class PostController {
     @Query('category') category: string = '',
     @Query('user') user: string = '',
   ) {
-    const limit  = PAGE_LIMIT;
-    return this.postService.findAll({ page, limit, search , category , user});
+    const limit = PAGE_LIMIT;
+    return this.postService.findAll({ page, limit, search, category, user });
   }
 
-  @Get("admin")
+  @Get('admin')
   findAllAdmin(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('search') search: string = '',
     @Query('category') category: string = '',
     @Query('user') user: string = '',
   ) {
-    const limit  = PAGE_LIMIT_ADMIN;
-    return this.postService.findAll({ page, limit, search , category , user});
+    const limit = PAGE_LIMIT_ADMIN;
+    return this.postService.findAll({ page, limit, search, category, user });
   }
 
   @Get(':id')
@@ -81,17 +81,16 @@ export class PostController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
-    @CurrentUser("user") user: JwtPayloadType,
-    @UploadedFile() file : Express.Multer.File
+    @CurrentUser('user') user: JwtPayloadType,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.postService.update(id, updatePostDto , user , file);
+    return this.postService.update(id, updatePostDto, user, file);
   }
-
 
   @Delete(':id')
   @Roles([UserRoles.ADMIN])
   @UseGuards(AuthGuard)
-  remove(@Param('id' , ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.postService.remove(id);
   }
 
@@ -100,15 +99,14 @@ export class PostController {
   @UseGuards(AuthGuard)
   toggleLikePost(
     @Param('id', ParseIntPipe) id: number,
-    @CurrentUser("user") user: JwtPayloadType,
+    @CurrentUser('user') user: JwtPayloadType,
   ) {
-    return this.postService.toggleLikePost(id , user);
+    return this.postService.toggleLikePost(id, user);
   }
 
-  @Get("getPostsCount")
-    @Roles([UserRoles.ADMIN])
-  getPostsCount(){
+  @Get('getPostsCount')
+  @Roles([UserRoles.ADMIN])
+  getPostsCount() {
     return this.postService.getPostsCount();
   }
-
 }

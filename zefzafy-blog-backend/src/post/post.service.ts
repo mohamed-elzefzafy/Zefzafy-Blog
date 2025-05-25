@@ -142,7 +142,7 @@ export class PostService {
     }
 
     query
-      .orderBy('post.likesLength', 'DESC')
+      .orderBy('post.reactsLength', 'DESC')
       .addOrderBy('post.createdAt', 'DESC');
     query.skip((page - 1) * limit).take(limit);
 
@@ -166,7 +166,7 @@ export class PostService {
       relations: {
         user: true,
         likes: true,
-        comments: { user: true },
+        comments: { user: true ,likes:true },
         category: true,
       },
       order: { comments: { createdAt: 'ASC' } },
@@ -256,7 +256,7 @@ export class PostService {
     } else {
       post.likes.push({ id: user.id } as UserEntity);
     }
-    post.likesLength = post.likes.length;
+    post.reactsLength = post.likes.length + post.comments.length;
     return this.postRepositry.save(post);
   }
 

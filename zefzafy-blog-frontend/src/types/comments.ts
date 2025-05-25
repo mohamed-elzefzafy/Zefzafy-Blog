@@ -9,13 +9,13 @@ export interface IComments {
   id: number;
   text: string;
   post: IPost;
+  likes: IUserInfo[];
   user: IUserInfo;
   createdAt: string;
   updatedAt: string;
 }
 
-
 export interface ICommentsResponse {
-  comments: IComments[] ;
+  comments: IComments[];
   pagination: Pagination;
 }

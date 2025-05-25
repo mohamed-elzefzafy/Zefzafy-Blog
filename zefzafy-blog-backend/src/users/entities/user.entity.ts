@@ -52,6 +52,9 @@ export class UserEntity {
   @ManyToMany(() => PostEntity, (post) => post.likes)
   likedPosts: PostEntity[];
 
+  @ManyToMany(() => CommentEntity, (comment) => comment.likes)
+  likedComments: CommentEntity[];
+
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
 
