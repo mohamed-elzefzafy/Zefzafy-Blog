@@ -38,7 +38,10 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  
   @Delete(':id')
+    @Roles([UserRoles.ADMIN])
+  @UseGuards(AuthGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
   }

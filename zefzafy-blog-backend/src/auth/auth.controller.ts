@@ -1,9 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
   Patch,
   Post,
   Res,
@@ -26,7 +29,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { VerificationAccountDto } from './dtos/verification-account.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 
-
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -41,10 +43,7 @@ export class AuthController {
   }
 
   @Post('login')
-  login(
-    @Body() loginDto: LoginDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
     return this.authService.login(loginDto, res);
   }
 
@@ -75,7 +74,7 @@ export class AuthController {
     @CurrentUser() user: JwtPayloadType,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.authService.verifyAccount(verificationAccountDto, user , res);
+    return this.authService.verifyAccount(verificationAccountDto, user, res);
   }
 
   @Get('current-user')
@@ -93,16 +92,21 @@ export class AuthController {
   public async updateCurrentUser(
     @Body() updateUserDto: UpdateUserDto,
     @CurrentUser() user: JwtPayloadType,
-    @UploadedFile("") file : Express.Multer.File
+    @UploadedFile('') file: Express.Multer.File,
   ) {
-    return this.authService.updateCurrentUser(updateUserDto, user ,file);
+    return this.authService.updateCurrentUser(updateUserDto, user, file);
   }
 
+  @Delete('delete-current-user')
+  @Roles([UserRoles.ADMIN, UserRoles.USER])
+  @UseGuards(AuthGuard)
+  remove(@CurrentUser() user: JwtPayloadType) {
+    return this.authService.remove(user.id);
+  }
 
-
-  @Post("logout")
+  @Post('logout')
   @HttpCode(HttpStatus.OK)
-  public async logout(@Res({passthrough : true}) res : Response) {
+  public async logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res);
   }
 }

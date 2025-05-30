@@ -1,0 +1,56 @@
+{
+  "HomePage": {
+    "reset": "Reset",
+    "search": "Search",
+    "category": "Category",
+    "all-categories": "All categories",
+    "add-Post": "Add Post"
+  },
+  "AddPost": {
+    "add-Post": "Add Post",
+    "title": "Title",
+    "content": "Content",
+    "category": "Category"
+  },
+  "EditPost": {
+    "update-post": "Update Post",
+    "title": "Title",
+    "content": "Content",
+    "category": "Category",
+    "save": "Save",
+    "image": "Image"
+  },
+  "postPage": {
+    "update-post": "Update Post",
+    "written-by": "Written By",
+    "written-at": "Written At",
+    "category": "Category",
+    "Post-content": "Post content",
+    "likes": "likes",
+    "like": "like",
+    "no-comments-on-this-post": "No Comments on this post",
+    "post-comments": "Post comments",
+    "post": "Post",
+    "comment": "Comment",
+    "post-inlikes": "Post",
+    "comment-inlikes": "Comment"
+  },
+  "createAndDisplayComments": {
+    "create-comment": "Create Comment",
+    "post-comments": "Post comments",
+    "comment": "Comment",
+    "write-comment": "Write Comment",
+    "verify-your-account to-write-comment": "verify your account to write comment",
+    "save": "Save",
+    "edit-your-comment-here": "Edit your comment here",
+    "cancel": "Cancel",
+    "people-likes": "people likes",
+    "post": "Post"
+  },
+  "postCard": {
+    "author": "Author",
+    "category": "Category",
+    "read-more": "Read More",
+    "delete-post": "Delete Post"
+  }
+}

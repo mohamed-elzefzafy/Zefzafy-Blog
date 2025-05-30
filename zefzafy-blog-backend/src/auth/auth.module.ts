@@ -6,6 +6,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PostModule } from 'src/post/post.module';
 
 @Module({
   controllers: [AuthController],
@@ -14,7 +15,7 @@ import { ConfigService } from '@nestjs/config';
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     CloudinaryModule,
-    JwtModule,
+    PostModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {

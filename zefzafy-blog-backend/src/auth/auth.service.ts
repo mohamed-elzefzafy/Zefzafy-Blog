@@ -20,6 +20,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { VerificationCodeDto } from './dtos/verification-code.dto';
 import { VerificationAccountDto } from './dtos/verification-account.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { PostService } from 'src/post/post.service';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +31,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
     private readonly mailerService: MailerService,
+    private readonly postService: PostService,
   ) {}
 
   public async register(registerDto: RegisterDto, file: Express.Multer.File) {
@@ -102,7 +104,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const code = (Math.floor(Math.random() * 1000000)).toString();
+    const code = Math.floor(Math.random() * 1000000).toString();
     const htmlMessage = `
     <div>
        <h1>Forgot your password? If you didn't forget your password, please ignore this email!</h1>
@@ -146,7 +148,7 @@ export class AuthService {
 
   public async sendVerificationCode(user: JwtPayloadType) {
     const exisUser = await this.userRepositry.findOneBy({ email: user.email });
-    const code = (Math.floor(Math.random() * 1000000)).toString();
+    const code = Math.floor(Math.random() * 1000000).toString();
     const htmlMessage = `
     <div>
        <h1>verify your account</h1>
@@ -169,7 +171,7 @@ export class AuthService {
   public async verifyAccount(
     verificationAccountDto: VerificationAccountDto,
     user: JwtPayloadType,
-    res: Response
+    res: Response,
   ) {
     const exisUser = await this.userRepositry.findOne({
       where: {
@@ -186,8 +188,8 @@ export class AuthService {
     user.isAccountVerified = true;
     exisUser.verificationCode = null;
     await this.userRepositry.save(exisUser);
-    
-        const payLoad: JwtPayloadType = {
+
+    const payLoad: JwtPayloadType = {
       id: user.id,
       email: user.email,
       role: user.role,
@@ -203,7 +205,7 @@ export class AuthService {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    return { message: 'Account verified successfully', user : exisUser };
+    return { message: 'Account verified successfully', user: exisUser };
   }
 
   public async getCurrentUser(user: JwtPayloadType) {
@@ -226,28 +228,60 @@ export class AuthService {
     updateUserDto.email = user.email;
     if (updateUserDto.password) {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
-    } 
+    }
     Object.assign(currentUser, updateUserDto);
     if (file) {
- if (currentUser.profileImage.public_id !== null) {
-  await this.cloudinaryService.removeImage(currentUser.profileImage.public_id)
- }
+      if (currentUser.profileImage.public_id !== null) {
+        await this.cloudinaryService.removeImage(
+          currentUser.profileImage.public_id,
+        );
+      }
 
- const result = await this.cloudinaryService.uploadImage(file, 'users');
- currentUser.profileImage = {
-   url: result.secure_url,
-   public_id: result.public_id,
- };
+      const result = await this.cloudinaryService.uploadImage(file, 'users');
+      currentUser.profileImage = {
+        url: result.secure_url,
+        public_id: result.public_id,
+      };
     }
     await this.userRepositry.save(currentUser);
     return currentUser;
   }
 
-  public async logout(res : Response) {
-res.cookie("token" , "" , {
-  httpOnly : true,
-  expires : new Date(0),
-})
-return {message : "logged out successfully"}
+  public async remove(id: number) {
+    const user = await this.userRepositry.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException(`User with id (${id}) not found`);
+    }
+
+    if (user.profileImage.public_id !== null) {
+      await this.cloudinaryService.removeImage(user.profileImage.public_id);
+    }
+
+    const posts = await this.postService.findUserPosts(id);
+    console.log('posts---', posts);
+
+    let publicIds = [];
+    if (posts.length > 0) {
+      posts.map((post) => {
+        if (post.image) {
+          publicIds.push(post.image.public_id);
+        }
+      });
+      console.log(publicIds);
+    }
+
+    if (publicIds.length > 0) {
+      await this.cloudinaryService.removeMultipleImages(publicIds);
+    }
+    await this.userRepositry.remove(user);
+    return { message: `User with id (${id}) was removed` };
+  }
+
+  public async logout(res: Response) {
+    res.cookie('token', '', {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+    return { message: 'logged out successfully' };
   }
 }

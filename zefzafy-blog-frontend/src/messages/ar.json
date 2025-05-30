@@ -1,0 +1,56 @@
+{
+  "HomePage": {
+    "reset": "إعادة تعيين",
+    "search": "إبحث",
+    "category": "القسم",
+    "all-categories": "كل الأقسام",
+    "add-Post": "أضف مقال"
+  },
+  "AddPost": {
+    "add-Post": "أضف مقال",
+    "title": "عنوان",
+    "content": "محتوى",
+    "category": "قسم"
+  },
+  "EditPost": {
+    "update-post": "تعديل مقال",
+    "title": "عنوان",
+    "content": "محتوى",
+    "category": "قسم",
+    "save": "حفظ",
+    "image": "صورة المقال"
+  },
+  "postPage": {
+    "update-post": "تعديل المقال",
+    "written-by": "كتب بواسطة",
+    "written-at": "كتب فى",
+    "category": "قسم",
+    "Post-content": "محتوى المقال",
+    "likes": "إعجاب",
+    "like": "إعجاب",
+    "no-comments-on-this-post": "لا يوجد تعليقات لهذا المقال",
+    "post-comments": "تعليقات المقال",
+    "post": "مقال",
+    "comment": "تعليق",
+    "post-inlikes": "المقال",
+    "comment-inlikes": "التعليق"
+  },
+  "createAndDisplayComments": {
+    "create-comment": "أكتب تعليق",
+    "post-comments": "تعليقات على المقال",
+    "comment": "تعليق",
+    "write-comment": "أكتب تعليق",
+    "verify-your-account to-write-comment": "فعل حسابك لتكتب تعليق",
+    "save": "حفظ",
+    "edit-your-comment-here": "عدل تعليقك",
+    "cancel": "تجاهل",
+    "people-likes": "الأشخاص الذين أعجبهم",
+    "post": "مقال"
+  },
+  "postCard": {
+    "author": "الكاتب",
+    "category": "قسم",
+    "read-more": "المزيد",
+    "delete-post": "حذف المقاله"
+  }
+}

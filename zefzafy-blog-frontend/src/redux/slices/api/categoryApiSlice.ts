@@ -11,6 +11,25 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Category"],
     }),
 
+        updateCategory: builder.mutation({
+      query: ({ payLoad, categoryId }) => ({
+        url: `/api/v1/category/${categoryId}`,
+            headers: {
+          "Cache-Control": "no-store", // Prevent caching
+        },
+        method: "PATCH",
+        body: payLoad,
+      }),
+    }),
+
+        getOneCategory: builder.query<ICategory, string | void>({
+          query: (id) => ({
+            url: `/api/v1/category/${id}`,
+          }),
+          keepUnusedDataFor: 5,
+          providesTags: ["Category"],
+        }),
+
     createCategory: builder.mutation({
       query: (data) => ({
         url: `/api/v1/category`,
@@ -73,6 +92,10 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, { id }) => [{ type: "Category", id }],
     }),
   }),
+
+
+  
+  
 });
 
 export const {
@@ -80,4 +103,6 @@ export const {
   useGetCategoriesAdminQuery,
   useDeleteCategoryAdminPageMutation,
   useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useGetOneCategoryQuery
 } = categoryApiSlice;

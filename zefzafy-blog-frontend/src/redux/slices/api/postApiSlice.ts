@@ -106,6 +106,9 @@ export const postApiSlice = apiSlice.injectEndpoints({
     getOnePost: builder.query<IPost, string | void>({
       query: (id) => ({
         url: `/api/v1/post/${id}`,
+            headers: {
+          "Cache-Control": "no-store", // Prevent caching
+        },
       }),
       keepUnusedDataFor: 5,
       providesTags: ["Post"],
