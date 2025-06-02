@@ -8,33 +8,35 @@ import {
   Group,
 } from "@mui/icons-material";
 import { useGetAllCountsQuery } from "@/redux/slices/api/utilsApiSlice";
+import { useTranslations } from "next-intl";
 
 const AdminDashboardPaper = () => {
   const { data: counts } = useGetAllCountsQuery();
+    const t = useTranslations("Admin-Dashboard");
   const theme = useTheme();
   console.log(counts);
 
   const data = [
     {
-      label: "Posts",
+      label: t("posts"),
       value: counts?.postsCount,
       icon: <Book fontSize="large" color="primary" />,
       path: "/admin-dashboard/posts",
     },
     {
-      label: "Users",
+      label: t("users"),
       value: counts?.usersCount,
       icon: <Group fontSize="large" color="primary" />,
       path: "/admin-dashboard/users",
     },
     {
-      label: "Categories",
+      label: t("categories"),
       value: counts?.categoriesCount,
       icon: <Category fontSize="large" color="primary" />,
       path: "/admin-dashboard/categories",
     },
     {
-      label: "Comments",
+      label: t("comments"),
       value: counts?.commentsCount,
       icon: <Comment fontSize="large" color="primary" />,
       path: "/admin-dashboard/comments",
@@ -43,8 +45,8 @@ const AdminDashboardPaper = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ mb: 4 }}>
-        Admin Dashboard :{" "}
+      <Typography variant="h4" sx={{ mb: 4 , ml:1, mt:1}}>
+        {t("dashboard")} :{" "}
       </Typography>
       <Grid container spacing={3}>
         {data.map((item, index) => (

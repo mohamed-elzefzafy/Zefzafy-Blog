@@ -14,9 +14,14 @@ import { useTheme } from "@mui/material/styles";
 import toast from "react-hot-toast";
 import swal from "sweetalert";
 import { useRouter } from "next/navigation";
-import { useDeleteCategoryAdminPageMutation, useGetCategoriesAdminQuery, useUpdateCategoryMutation } from "@/redux/slices/api/categoryApiSlice";
+import {
+  useDeleteCategoryAdminPageMutation,
+  useGetCategoriesAdminQuery,
+  useUpdateCategoryMutation,
+} from "@/redux/slices/api/categoryApiSlice";
 import Link from "next/link";
 import PaginationComponent from "@/app/[locale]/components/PaginationComponent";
+import { useTranslations } from "next-intl";
 
 const AdminCategoriesPage = () => {
   const router = useRouter();
@@ -26,18 +31,19 @@ const AdminCategoriesPage = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const updateCategory = useUpdateCategoryMutation();
+  const t = useTranslations("Categories-Table-page");
 
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "Serial",
+      headerName: t("serial"),
       width: isSmallScreen ? 60 : 80,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: t("name"),
       flex: isSmallScreen ? 0.8 : 1,
       minWidth: isSmallScreen ? 120 : 150,
       align: "center",
@@ -63,10 +69,10 @@ const AdminCategoriesPage = () => {
         </Box>
       ),
     },
-    
+
     {
       field: "postsCount",
-      headerName: "Posts under the category",
+      headerName: t("Posts-under-the-category"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 120,
       align: "center",
@@ -74,22 +80,31 @@ const AdminCategoriesPage = () => {
     },
     {
       field: "Remove",
-      headerName: "Remove",
+      headerName: t("remove"),
       width: isSmallScreen ? 80 : 100,
       align: "center",
       headerAlign: "center",
-  
-              renderCell: (params: GridRenderCellParams<string[]>) => (
+
+      renderCell: (params: GridRenderCellParams<string[]>) => (
         <>
-              <IconButton
-          onClick={() => onDeletePost({ id: params.value, page: currentPage })}
-          sx={{ padding: isSmallScreen ? "6px" : "8px" }}
-        >
-          <Delete color="error" fontSize={isSmallScreen ? "small" : "medium"} />
-        </IconButton>
           <IconButton
-           onClick={()=> router.push(`/admin-dashboard/categories/edit-category/${params.value}`)}
-           >
+            onClick={() =>
+              onDeletePost({ id: params.value, page: currentPage })
+            }
+            sx={{ padding: isSmallScreen ? "6px" : "8px" }}
+          >
+            <Delete
+              color="error"
+              fontSize={isSmallScreen ? "small" : "medium"}
+            />
+          </IconButton>
+          <IconButton
+            onClick={() =>
+              router.push(
+                `/admin-dashboard/categories/edit-category/${params.value}`
+              )
+            }
+          >
             <Edit color="info" />
           </IconButton>
         </>
@@ -101,7 +116,7 @@ const AdminCategoriesPage = () => {
     data?.categories.map((category, index) => ({
       id: index + 1,
       name: category.title,
-      postsCount:category?.posts.length,
+      postsCount: category?.posts.length,
       categoryId: category.id,
       Remove: category.id,
     })) || [];
@@ -148,17 +163,32 @@ const AdminCategoriesPage = () => {
         flexDirection: "column",
       }}
     >
-     <Stack sx={{flexDirection : "row" , justifyContent : "space-between" , alignItems : "center" , mb : 2 , mr:7}}>
+      <Stack
+        sx={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+          mr: 7,
+        }}
+      >
         <Typography
           variant={isSmallScreen ? "h6" : "h5"}
           sx={{ my: 1, fontWeight: "bold" }}
         >
-          Categories : 
+          {t("categories")} :
         </Typography>
-      <Button  variant='contained' size="small" sx={{textTransform :"capitalize"}}
-      onClick={() => router.push("/admin-dashboard/categories/add-category")}
-      >Add Category</Button>
-     </Stack>
+        <Button
+          variant="contained"
+          size="small"
+          sx={{ textTransform: "capitalize" }}
+          onClick={() =>
+            router.push("/admin-dashboard/categories/add-category")
+          }
+        >
+          {t("add-category")}
+        </Button>
+      </Stack>
       <Box
         sx={{
           flexGrow: 1,

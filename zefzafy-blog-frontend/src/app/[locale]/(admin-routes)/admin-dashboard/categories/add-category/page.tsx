@@ -10,6 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -38,6 +39,8 @@ const AddCategoryAdminPage = () => {
       toast.error((error as { data: { message: string } })?.data?.message);
     }
   };
+
+    const t = useTranslations("add-category");
   return (
     <Stack
       component="form"
@@ -55,7 +58,7 @@ const AddCategoryAdminPage = () => {
       }}
     >
       <Typography variant="h6" component="h2" sx={{ ml: 2 }}>
-        Add Category
+      {t("add-category")}
         <Tooltip
           title={"back to Categories admin dashboard"}
           placement="right-end"
@@ -70,8 +73,8 @@ const AddCategoryAdminPage = () => {
       </Typography>
       <TextField
         type="text"
-        placeholder="title"
-        label="Title"
+        placeholder={t("title")}
+        label={t("title")}
         sx={{ width: "100%" }}
         {...register("title", { required: "title is required" })}
         error={errors.title ? true : false}
@@ -85,7 +88,7 @@ const AddCategoryAdminPage = () => {
         sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
         disabled={isSubmitting}
       >
-        Add Category
+        {t("add-category")}
       </Button>
     </Stack>
   );

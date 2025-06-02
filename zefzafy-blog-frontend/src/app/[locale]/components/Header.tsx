@@ -20,6 +20,7 @@ import { logoutAction } from "@/redux/slices/authSlice";
 import Link from "next/link";
 import { useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 function Header() {
   const router = useRouter();
@@ -52,9 +53,9 @@ function Header() {
     router.push("/auth/verifyAccount");
     handleCloseUserMenu();
   };
-
+  const t = useTranslations("Header");
   return (
-    <AppBar position="fixed" >
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
@@ -117,7 +118,7 @@ function Header() {
             }}
           >
             {/* Theme Toggle */}
-            <LanguageSwitcher/>
+            <LanguageSwitcher />
             <ToggleDarkLightIcons fontSize="20px" />
 
             {/* Auth Buttons (Not Logged In) */}
@@ -131,7 +132,7 @@ function Header() {
                     px: { xs: 1, sm: 2 }, // Responsive padding
                   }}
                 >
-                  Register
+                  {t("register")}
                 </Button>
                 <Button
                   onClick={() => router.push("/auth/login")}
@@ -141,7 +142,7 @@ function Header() {
                     px: { xs: 1, sm: 2 },
                   }}
                 >
-                  Login
+                  {t("login")}
                 </Button>
               </>
             )}
@@ -196,7 +197,7 @@ function Header() {
                           fontSize: { xs: "0.875rem", sm: "1rem" },
                         }}
                       >
-                        Verify your account
+                        {t("verify-your-account")}
                       </Typography>
                     </MenuItem>
                   )}
@@ -207,14 +208,14 @@ function Header() {
                       disabled={!userInfo.isAccountVerified}
                     >
                       <Typography
-                      href={"/admin-dashboard"}
+                        href={"/admin-dashboard"}
                         sx={{
                           textAlign: "center",
                           fontSize: { xs: "0.875rem", sm: "1rem" },
                         }}
                         component={Link}
                       >
-                        Admin Dashboard
+                        {t("admin-dashboard")}
                       </Typography>
                     </MenuItem>
                   )}
@@ -233,7 +234,7 @@ function Header() {
                         color: "inherit",
                       }}
                     >
-                      Profile
+                      {t("profile")}
                     </Typography>
                   </MenuItem>
 
@@ -244,7 +245,7 @@ function Header() {
                         fontSize: { xs: "0.875rem", sm: "1rem" },
                       }}
                     >
-                      Logout
+                      {t("logout")}
                     </Typography>
                   </MenuItem>
                 </Menu>

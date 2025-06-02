@@ -66,7 +66,7 @@ const PostContent = ({post}:{post:IPost}) => {
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
                 fontWeight: "bold",
-                color: "error.main",
+                color: "primary.main",
               }}
             >
             {t("written-by")}
@@ -91,7 +91,7 @@ const PostContent = ({post}:{post:IPost}) => {
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
                 fontWeight: "bold",
-                color: "error.main",
+                color: "primary.main",
               }}
             >
               {t("category")}
@@ -120,7 +120,7 @@ const PostContent = ({post}:{post:IPost}) => {
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
                 fontWeight: "bold",
-                color: "error.main",
+                color: "primary.main",
               }}
             >
               {t("written-at")}
@@ -143,7 +143,7 @@ const PostContent = ({post}:{post:IPost}) => {
         <Stack sx={{ mt: 2, alignItems: "flex-start", width: "100%" }}>
           <Typography
             variant="h6"
-            sx={{ color: "error.main", fontWeight: "bold" }}
+            sx={{ color: "primary.main", fontWeight: "bold" }}
           >
             {t("Post-content")} :{" "}
           </Typography>
@@ -165,7 +165,7 @@ const PostContent = ({post}:{post:IPost}) => {
         <Stack sx={{ mt: 5, alignItems: "flex-start", width: "100%" }}>
           <Typography
             variant="h6"
-            sx={{ color: "error.main", fontWeight: "bold" }}
+            sx={{ color: "primary.main", fontWeight: "bold" }}
           >
             {post.comments.length < 1
               ? t("no-comments-on-this-post")

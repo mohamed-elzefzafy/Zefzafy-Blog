@@ -20,6 +20,7 @@ import swal from "sweetalert";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PaginationComponent from "@/app/[locale]/components/PaginationComponent";
+import { useTranslations } from "next-intl";
 
 const AdminPostsPage = () => {
   const router = useRouter();
@@ -28,18 +29,19 @@ const AdminPostsPage = () => {
   const [deletePostAdminPage] = useDeletePostAdminPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const t = useTranslations("Posts-Table-page");
 
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "Serial",
+      headerName: t("serial"),
       width: isSmallScreen ? 60 : 80,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "title",
-      headerName: "Title",
+      headerName: t("title"),
       flex: isSmallScreen ? 0.8 : 1,
       minWidth: isSmallScreen ? 120 : 150,
       align: "center",
@@ -67,7 +69,7 @@ const AdminPostsPage = () => {
     },
     {
       field: "category",
-      headerName: "Category",
+      headerName: t("category"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 120,
       align: "center",
@@ -75,7 +77,7 @@ const AdminPostsPage = () => {
     },
     {
       field: "auther",
-      headerName: "Author",
+      headerName: t("author"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -95,7 +97,7 @@ const AdminPostsPage = () => {
     },
     {
       field: "createdAt",
-      headerName: "Written At",
+      headerName: t("written-at"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -103,7 +105,7 @@ const AdminPostsPage = () => {
     },
     {
       field: "Remove",
-      headerName: "Remove",
+      headerName: t("remove"),
       width: isSmallScreen ? 80 : 100,
       align: "center",
       headerAlign: "center",
@@ -159,7 +161,7 @@ const AdminPostsPage = () => {
       toast.error(errorMessage);
     }
   };
-
+  
   return (
     <Box
       sx={{
@@ -185,7 +187,7 @@ const AdminPostsPage = () => {
           variant={isSmallScreen ? "h6" : "h5"}
           sx={{ my: 1, fontWeight: "bold" }}
         >
-          Posts : 
+          {t("posts")} : 
         </Typography>
       </Stack>
       <Box

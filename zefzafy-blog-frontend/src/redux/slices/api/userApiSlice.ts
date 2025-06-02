@@ -49,8 +49,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
+
+        deleteCurrentUser: builder.mutation({
+      query: () => ({
+        url: `/api/v1/auth/delete-current-user`,
+        headers: {
+          "Cache-Control": "no-store", // Prevent caching
+        },
+        method: "DELETE",
+      }),
+      invalidatesTags: ["User"],
+    }),
+
   }),
 });
 
-export const { useGetUsersQuery, useDeleteUserAdminPageMutation } =
+export const { useGetUsersQuery, useDeleteUserAdminPageMutation , useDeleteCurrentUserMutation} =
   userApiSlice;

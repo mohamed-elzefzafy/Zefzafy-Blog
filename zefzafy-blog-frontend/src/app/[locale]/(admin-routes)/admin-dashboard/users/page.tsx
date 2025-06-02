@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useDeleteUserAdminPageMutation, useGetUsersQuery } from "@/redux/slices/api/userApiSlice";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const AdminUsersPage = () => {
   const router = useRouter();
@@ -25,18 +26,19 @@ const AdminUsersPage = () => {
   const [deleteUserAdminPage] = useDeleteUserAdminPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const t = useTranslations("Users-Table-page");
 
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "Serial",
+      headerName: t("serial"),
       width: isSmallScreen ? 60 : 80,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName:  t("name"),
       flex: isSmallScreen ? 0.8 : 1,
       minWidth: isSmallScreen ? 120 : 150,
       align: "center",
@@ -64,7 +66,7 @@ const AdminUsersPage = () => {
     },
       {
       field: "profileImage",
-      headerName: "Profile",
+      headerName: t("profile"),
       flex: 1,
       align: "center",
       headerAlign: "center",
@@ -82,7 +84,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "email",
-      headerName: "Email",
+      headerName:  t("email"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 120,
       align: "center",
@@ -90,7 +92,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "role",
-      headerName: "Role",
+      headerName:  t("role"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -112,7 +114,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "createdAt",
-      headerName: "Registerd At",
+      headerName:  t("registerd-at"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -120,7 +122,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "isAccountVerified",
-      headerName: "Verifed statue",
+      headerName: t("verifed-statue"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -128,7 +130,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "Remove",
-      headerName: "Remove",
+      headerName: t("remove"),
       width: isSmallScreen ? 80 : 100,
       align: "center",
       headerAlign: "center",
@@ -219,7 +221,7 @@ const AdminUsersPage = () => {
           variant={isSmallScreen ? "h6" : "h5"}
           sx={{ my: 1, fontWeight: "bold" }}
         >
-          Users : 
+          { t("users")} : 
         </Typography>
       </Stack>
       <Box

@@ -4,6 +4,7 @@ import { useUpdateUserMutation } from "@/redux/slices/api/authApiSlice";
 import { setCredentials } from "@/redux/slices/authSlice";
 import { IUserUpdate, IUserUpdate2, UserRegister } from "@/types/auth";
 import { Button, Stack, TextField, Typography } from "@mui/material"
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
@@ -57,6 +58,8 @@ const EditUserProfile = () => {
         toast.error((error as { data: { message: string } })?.data?.message);
       }
     };
+
+    const t = useTranslations("UpdateProfilePage");
   return (
     <Stack
       component="form"
@@ -73,13 +76,13 @@ const EditUserProfile = () => {
       }}
     >
       <Typography variant="h6" component="h2">
-        Update Profile
+      {t("update-profile")}
       </Typography>
       <TextField
         type="text"
-        placeholder="FirstName"
+        placeholder={t("first-name")}
         defaultValue={userInfo?.firstName}
-        label="FirstName"
+        label={t("first-name")}
         sx={{ width: "100%" }}
         {...register("firstName", { required: "first name is required" })}
         error={errors.firstName ? true : false}
@@ -87,9 +90,9 @@ const EditUserProfile = () => {
       />
       <TextField
         type="text"
-        placeholder="LastName"
+        placeholder={t("last-name")}
         defaultValue={userInfo?.lastName}
-        label="LastName"
+        label={t("last-name")}
         sx={{ width: "100%" }}
         {...register("lastName", { required: "Last name is required" })}
         error={errors.lastName ? true : false}
@@ -99,8 +102,8 @@ const EditUserProfile = () => {
 
       <TextField
         type="password"
-        placeholder="Password"
-        label="Password"
+        placeholder={t("password")}
+        label={t("password")}
         sx={{ width: "100%" }}
         {...register("password")}
         error={errors.password ? true : false}
@@ -126,7 +129,7 @@ const EditUserProfile = () => {
       ): null
       }
       <TextField
-        label="Profile Image"
+        label={t("profile-image")}
         type="file"
         onChange={handleImageChange}
         fullWidth
@@ -140,7 +143,7 @@ const EditUserProfile = () => {
         sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
         disabled={isSubmitting || !isValid}
       >
-        Save
+        {t("save")}
       </Button>
 
     </Stack>

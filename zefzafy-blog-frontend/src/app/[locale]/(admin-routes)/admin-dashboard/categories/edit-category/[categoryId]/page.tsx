@@ -10,6 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -57,7 +58,7 @@ const EditCategoryAdminPage = ({ params }: { params: Promise<{ categoryId: strin
     }
   };
 
-
+  const t = useTranslations("update-category");
   return (
     <Stack
       component="form"
@@ -75,7 +76,7 @@ const EditCategoryAdminPage = ({ params }: { params: Promise<{ categoryId: strin
       }}
     >
       <Typography variant="h6" component="h2" sx={{ ml: 2 }}>
-        Update Category
+        {t("update-category")}
         <Tooltip
           title={"back to Categories admin dashboard"}
           placement="right-end"
@@ -90,9 +91,9 @@ const EditCategoryAdminPage = ({ params }: { params: Promise<{ categoryId: strin
       </Typography>
       <TextField
         type="text"
-        placeholder="title"
+        placeholder={t("title")}
         defaultValue={category?.title}
-        label="Title"
+        label={t("title")}
         sx={{ width: "100%" }}
         {...register("title", { required: "title is required" })}
         error={errors.title ? true : false}
@@ -106,7 +107,7 @@ const EditCategoryAdminPage = ({ params }: { params: Promise<{ categoryId: strin
         sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
         disabled={isSubmitting}
       >
-        Add Category
+        {t("update-category")}
       </Button>
     </Stack>
   );

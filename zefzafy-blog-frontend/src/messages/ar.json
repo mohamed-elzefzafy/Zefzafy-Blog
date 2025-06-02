@@ -52,5 +52,84 @@
     "category": "قسم",
     "read-more": "المزيد",
     "delete-post": "حذف المقاله"
+  },
+  "profilePage": {
+    "name": "الإسم",
+    "email": "البريد الإليكترونى",
+    "registerd-at": "مشترك من",
+    "role": "الصفه",
+    "posts": "مقالات",
+    "delete-my-account": "حذف حسابى",
+    "Edit-user-profile": "تعديل حسابى"
+  },
+  "UpdateProfilePage": {
+    "update-profile": "تعديل حسابى",
+    "first-name": "الإسم الأول",
+    "last-name": "الإسم الثانى",
+    "password": "الرقم السرى",
+    "save": "حفظ",
+    "profile-image": "الصوره الشخصيه"
+  },
+  "Header": {
+    "admin-dashboard": "لوحة تحكم الأدمن",
+    "profile": "الحساب الشخصى",
+    "logout": "تسجيل الخروج",
+    "verify-your-account": "ير حى تفعيل حسابك",
+    "login": "دخول",
+    "register": "تسجيل"
+  },
+  "Admin-Dashboard": {
+    "dashboard": "لوحة تحكم الأدمن",
+    "posts-table": "جدول المقالات",
+    "users-table": "جدول المستخدمين",
+    "categories-table": "جدول الأقسام",
+    "comments-table": "جدول التعليقات",
+    "posts": "المقالات",
+    "users": "المستخدمين",
+    "categories": "الأقسام",
+    "comments": "التعليقات"
+  },
+  "Posts-Table-page": {
+    "serial": "مسلسل",
+    "posts": "المقالات",
+    "title": "عنوان",
+    "author": "الكاتب",
+    "category": "قسم",
+    "written-at": "كتب فى",
+    "remove": "حذف"
+  },
+  "Users-Table-page": {
+    "serial": "مسلسل",
+    "name": "الإسم",
+    "profile": "الحساب الشخصى",
+    "email": "البريد الإليكترونى",
+    "role": "الصفه",
+    "registerd-at": "مشترك من",
+    "verifed-statue": "حالة التفعيل",
+    "remove": "حذف",
+    "users": "المستخدمين"
+  },
+  "Categories-Table-page": {
+    "serial": "مسلسل",
+    "name": "الإسم",
+    "Posts-under-the-category": "مقالات هذا القسم",
+    "remove": "حذف",
+    "categories": "الأقسام",
+    "add-category": "أضف قسم"
+  },
+  "add-category": {
+    "title": "عنوان",
+    "add-category": "أضف قسم"
+  },
+  "update-category": {
+    "title": "عنوان",
+    "update-category": "تعديل القسم"
+  },
+  "Comments-Table-page": {
+    "serial": "مسلسل",
+    "comment": "التعليق",
+    "post": "المقال",
+    "remove": "حذف",
+    "comments": "التعليقات"
   }
 }

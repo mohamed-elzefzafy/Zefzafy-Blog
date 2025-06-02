@@ -5,7 +5,13 @@ import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-const EditUserProfileButton = ({ userId }: { userId: number }) => {
+const DeleteUserProfileButton = ({
+  onDeleteCurrentUser,
+  userId
+}: {
+  onDeleteCurrentUser: () => void;
+  userId: number
+}) => {
   const { userInfo } = useAppSelector((state) => state?.auth);
 
   const t = useTranslations("profilePage");
@@ -13,8 +19,6 @@ const EditUserProfileButton = ({ userId }: { userId: number }) => {
     <>
       {userInfo.id === userId ? (
         <Box
-          component={Link}
-          href={`/edit-user/${userId}`}
           sx={{
             borderBlockColor: "secondary.main",
             borderBlockWidth: 1,
@@ -32,10 +36,11 @@ const EditUserProfileButton = ({ userId }: { userId: number }) => {
             endIcon={<Edit />}
             variant="text"
             size="large"
-            color="secondary"
+            color="error"
             sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+            onClick={onDeleteCurrentUser}
           >
-            {t("Edit-user-profile")}
+            {t("delete-my-account")}
           </Button>
         </Box>
       ) : (
@@ -45,4 +50,4 @@ const EditUserProfileButton = ({ userId }: { userId: number }) => {
   );
 };
 
-export default EditUserProfileButton;
+export default DeleteUserProfileButton;

@@ -19,6 +19,7 @@ import {
   useDeleteCommentAdminAdminDashPageMutation,
   useGetCommentsAdminQuery,
 } from "@/redux/slices/api/commentApiSlice";
+import { useTranslations } from "next-intl";
 
 const AdminCommentsPage = () => {
   const router = useRouter();
@@ -28,24 +29,24 @@ const AdminCommentsPage = () => {
     useDeleteCommentAdminAdminDashPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  console.log("data", data);
+  const t = useTranslations("Comments-Table-page");
 
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "Serial",
+      headerName: t("serial"),
       width: isSmallScreen ? 60 : 80,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "text",
-      headerName: "Comment",
+      headerName: t("comment"),
       flex: isSmallScreen ? 0.8 : 1,
       minWidth: isSmallScreen ? 120 : 150,
       align: "center",
       headerAlign: "center",
-    renderCell: (params: GridRenderCellParams) => (
+      renderCell: (params: GridRenderCellParams) => (
         <Box
           sx={{
             whiteSpace: "normal",
@@ -67,10 +68,9 @@ const AdminCommentsPage = () => {
       ),
     },
 
-
-        {
+    {
       field: "post",
-      headerName: "Post",
+      headerName: t("post"),
       flex: isSmallScreen ? 0.8 : 1,
       minWidth: isSmallScreen ? 120 : 150,
       align: "center",
@@ -98,13 +98,15 @@ const AdminCommentsPage = () => {
     },
     {
       field: "Remove",
-      headerName: "Remove",
+      headerName: t("remove"),
       width: isSmallScreen ? 80 : 100,
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridRenderCellParams) => (
         <IconButton
-          onClick={() => onDeleteComment({ id: params.value, page: currentPage })}
+          onClick={() =>
+            onDeleteComment({ id: params.value, page: currentPage })
+          }
           sx={{ padding: isSmallScreen ? "6px" : "8px" }}
         >
           <Delete color="error" fontSize={isSmallScreen ? "small" : "medium"} />
@@ -116,10 +118,10 @@ const AdminCommentsPage = () => {
   const rows =
     data?.comments.map((comment, index) => ({
       id: index + 1,
-      text: comment.text.slice(0 ,10) + (comment.text.length > 10 ?"..." :""),
+      text: comment.text.slice(0, 10) + (comment.text.length > 10 ? "..." : ""),
       post: comment.post.title,
       commentId: comment.id,
-      postId :comment.post.id,
+      postId: comment.post.id,
       Remove: comment.id,
     })) || [];
 
@@ -130,7 +132,13 @@ const AdminCommentsPage = () => {
     setCurrentPage(value);
   };
 
-  const onDeleteComment = async ({ id, page }: { id: number; page: number }) => {
+  const onDeleteComment = async ({
+    id,
+    page,
+  }: {
+    id: number;
+    page: number;
+  }) => {
     try {
       const willDelete = await swal({
         title: "Are you sure?",
@@ -178,7 +186,7 @@ const AdminCommentsPage = () => {
           variant={isSmallScreen ? "h6" : "h5"}
           sx={{ my: 1, fontWeight: "bold" }}
         >
-          Comments :
+          {t("comments")} :
         </Typography>
       </Stack>
       <Box

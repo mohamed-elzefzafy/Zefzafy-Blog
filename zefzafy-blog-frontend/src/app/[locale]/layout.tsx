@@ -59,11 +59,15 @@ export default async function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <body className={inter.className}>
-        <Providers>
+        
+  <NextIntlClientProvider>  
+    <Providers>
           <CssBaseline />
-  <NextIntlClientProvider>    {children}</NextIntlClientProvider>
+      {children}
+          </Providers>
+      </NextIntlClientProvider>
       
-        </Providers>
+    
       </body>
     </html>
   );

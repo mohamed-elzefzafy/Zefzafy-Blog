@@ -52,5 +52,84 @@
     "category": "Category",
     "read-more": "Read More",
     "delete-post": "Delete Post"
+  },
+  "profilePage": {
+    "name": "Name ",
+    "email": "Email",
+    "registerd-at": "Registerd At",
+    "role": "Role",
+    "posts": "Posts",
+    "delete-my-account": "Delete My Account",
+    "Edit-user-profile": "Edit User Profile"
+  },
+  "UpdateProfilePage": {
+    "update-profile": "Update Profile",
+    "first-name": "FirstName",
+    "last-name": "LastName",
+    "password": "Password",
+    "save": "save",
+    "profile-image": "Profile Image"
+  },
+  "Header": {
+    "admin-dashboard": "Admin Dashboard",
+    "profile": "Profile",
+    "logout": "Logout",
+    "verify-your-account": "verify your account",
+    "login": "Login",
+    "register": "Register"
+  },
+  "Admin-Dashboard": {
+    "dashboard": "Admin Dashboard",
+    "posts-table": "Posts Table",
+    "users-table": "Users Table",
+    "categories-table": "Categories Table",
+    "comments-table": "Comments Table",
+    "posts": "Posts",
+    "users": "Users",
+    "categories": "Categories",
+    "comments": "Comments"
+  },
+  "Posts-Table-page": {
+    "serial": "Serial",
+    "posts": "Posts",
+    "title": "Title",
+    "author": "Author",
+    "category": "Category",
+    "written-at": "Written At",
+    "remove": "Remove"
+  },
+  "Users-Table-page": {
+    "serial": "Serial",
+    "name": "Name",
+    "profile": "Profile",
+    "email": "Email",
+    "role": "Role",
+    "registerd-at": "Registerd At",
+    "verifed-statue": "Verifed statue",
+    "remove": "Remove",
+    "users": "Users"
+  },
+  "Categories-Table-page": {
+    "serial": "Serial",
+    "name": "Name",
+    "Posts-under-the-category": "Posts under the category",
+    "remove": "Remove",
+    "categories": "Categories",
+    "add-category": "Add Category"
+  },
+    "add-category": {
+      "title": "Title",
+      "add-category": "Add Category"
+  },
+      "update-category": {
+      "title": "Title",
+      "update-category": "Update Category"
+  },
+  "Comments-Table-page": {
+    "serial": "Serial",
+    "comment": "Comment",
+    "post": "Post",
+    "remove": "Remove",
+      "comments" : "Comments"
   }
 }

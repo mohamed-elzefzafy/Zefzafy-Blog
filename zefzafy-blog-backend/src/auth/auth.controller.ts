@@ -87,7 +87,6 @@ export class AuthController {
   @Patch()
   @Roles([UserRoles.USER, UserRoles.ADMIN])
   @UseGuards(AuthGuard)
-  @Post('register')
   @UseInterceptors(FileInterceptor('profileImage'))
   public async updateCurrentUser(
     @Body() updateUserDto: UpdateUserDto,
