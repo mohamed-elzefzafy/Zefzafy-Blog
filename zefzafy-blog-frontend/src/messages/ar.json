@@ -131,5 +131,44 @@
     "post": "المقال",
     "remove": "حذف",
     "comments": "التعليقات"
+  },
+  "register": {
+    "register": "إنشاء حساب",
+    "first-name": "الإسم الأول",
+    "last-name": "الإسم الثانى",
+    "email": "البريد الإليكترونى",
+    "password": "الرقم السرى",
+    "profile-image": "الصوره الشخصيه",
+    "if-you-have-account-already-please": "إذا كان لديك حساب بالفعل يرجى",
+    "login": "تسجيل الدخول"
+  },
+  "login": {
+    "login": "تسجيل الدخول",
+    "email": "البريد الإليكترونى",
+    "password": "كلمة المرور",
+    "register-": "إنشاء حساب جديد",
+    "if-you-don't-have-account-please": "إذا كنت لا تملك حساب من فضلك",
+    "register": "إشترك",
+    "if-you-forgot-your-password-please-go": "إذا كنت نسيت كلمة المرور من فضلك إذهب",
+    "here": "هنا",
+    "thanks": "شكرا لإنشاء حساب",
+    "for-register-please": "من فضلك",
+    "login-": "أدخل"
+  },
+  "logVerify-your-accountin": {
+    "verify-your-account": "فعل حسابك",
+    "Send-code-to-my-email": "إرسل كود التفعيل لبريدى الإليكترونى"
+  },
+  "Verify-email": {
+    "verify-email": "قم بتفعيل بريدى الإليكترونى",
+    "verification-code": "كود التفعيل",
+    "Verify-code": "قم بتفعيل بريدى الإليكترونى",
+    "email": "البريد الإليكترونى",
+      "for-registering-please-verify-your-email": "for registering, please verify your email"
+  },
+  "reset-password": {
+    "reset-password": "أعد تعيين كلمة المرور",
+    "email": "البريد الإليكترونى"
   }
 }
+

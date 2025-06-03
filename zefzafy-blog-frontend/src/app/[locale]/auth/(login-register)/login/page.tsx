@@ -5,6 +5,7 @@ import { setCredentials } from "@/redux/slices/authSlice";
 import { UserLogin } from "@/types/auth";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ const LoginPage = () => {
     "userNameFromUpdatePassword"
   );
   const [login] = useLoginMutation();
+  const t = useTranslations("login");
 
   const {
     register,
@@ -52,11 +54,11 @@ const LoginPage = () => {
           }}
         >
           <Typography sx={{ mx: "auto", display: "flex", gap: 1 }}>
-            thanks{" "}
+            {t("thanks")}{" "}
             <Typography component="span" sx={{ color: lightBlue[700] }}>
               {userNameQuery}
             </Typography>{" "}
-            for register please login
+            {t("for-register-please")} {t("login-")}
           </Typography>
         </Box>
       )}
@@ -95,13 +97,13 @@ const LoginPage = () => {
         }}
       >
         <Typography variant="h6" component="h2">
-          Login
+          {t("login")}
         </Typography>
 
         <TextField
           type="email"
-          placeholder="Email"
-          label="Email"
+          placeholder={t("email")}
+          label={t("email")}
           sx={{ width: "100%" }}
           {...register("email", { required: "email is required" })}
           error={errors.email ? true : false}
@@ -110,8 +112,8 @@ const LoginPage = () => {
 
         <TextField
           type="password"
-          placeholder="Password"
-          label="Password"
+          placeholder={t("password")}
+          label={t("password")}
           sx={{ width: "100%" }}
           {...register("password", { required: "password is required" })}
           error={errors.password ? true : false}
@@ -125,19 +127,19 @@ const LoginPage = () => {
           sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
           disabled={isSubmitting || !isValid}
         >
-          Login
+          {t("login")}
         </Button>
         <Typography>
-          if you don&apos;t have account please
+          {t("if-you-don't-have-account-please")}{" "}
           <Typography component={Link} href="/auth/register" sx={{ ml: 1 }}>
-            Register
+            {t("register")}
           </Typography>{" "}
         </Typography>
         <Typography>
-          if you forgot your password please go{" "}
+          {t("if-you-forgot-your-password-please-go")}{" "}
           <Typography component={Link} href="/auth/resetPassword">
             {" "}
-            here
+            {t("here")}
           </Typography>
         </Typography>
       </Stack>

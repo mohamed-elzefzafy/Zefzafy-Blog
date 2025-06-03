@@ -4,6 +4,7 @@ import { useEnterVerifyCodeMutation } from "@/redux/slices/api/authApiSlice";
 import { setCredentials } from "@/redux/slices/authSlice";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,7 +22,8 @@ const EnterVerifyCode = () => {
   const searchParams = useSearchParams();
   const userNameQuery = searchParams.get("userName");
   const [enterVerifyCode] = useEnterVerifyCodeMutation();
-  const [isVerified, setIsVerified] = useState(false); // Local state to track verification
+  const [isVerified, setIsVerified] = useState(false); 
+  const t = useTranslations("Verify-email");
 
   const {
     register,
@@ -69,7 +71,7 @@ const EnterVerifyCode = () => {
             <Typography sx={{ color: lightBlue[700] }}>
               {userNameQuery}
             </Typography>{" "}
-            for registering, please verify your email
+            {t("for-registering-please-verify-your-email")}
           </Typography>
         </Box>
       )}
@@ -88,13 +90,13 @@ const EnterVerifyCode = () => {
         }}
       >
         <Typography variant="h6" component="h2">
-          Verify Email
+        {t("verify-email")}
         </Typography>
 
         <TextField
           type="email"
-          placeholder="Email"
-          label="Email"
+          placeholder={t("email")}
+          label={t("email")}
           sx={{ width: "100%" }}
           {...register("email", { required: "Email is required" })}
           error={!!errors.email}
@@ -103,8 +105,8 @@ const EnterVerifyCode = () => {
 
         <TextField
           type="text"
-          placeholder="Verification Code"
-          label="Verification Code"
+          placeholder={t("verification-code")}
+          label={t("verification-code")}
           sx={{ width: "100%" }}
           {...register("verificationCode", {
             required: "Verification code is required",
@@ -120,7 +122,7 @@ const EnterVerifyCode = () => {
           sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
           disabled={isSubmitting || !isValid}
         >
-          Verify Code
+          {t("Verify-code")}
         </Button>
       </Stack>
     </>

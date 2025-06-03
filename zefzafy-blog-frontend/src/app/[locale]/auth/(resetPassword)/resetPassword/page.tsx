@@ -2,6 +2,7 @@
 import { useResetPasswordMutation } from "@/redux/slices/api/authApiSlice";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -15,6 +16,7 @@ const ResetPassword = () => {
   const searchParams = useSearchParams();
   const userNameQuery = searchParams.get("userName");
   const [resetPassword] = useResetPasswordMutation();
+  const t = useTranslations("reset-password");
 
   const {
     register,
@@ -70,13 +72,13 @@ const ResetPassword = () => {
         }}
       >
         <Typography variant="h6" component="h2">
-          Reset Password
+        {t("reset-password")}
         </Typography>
 
         <TextField
           type="email"
-          placeholder="Email"
-          label="Email"
+          placeholder={t("email")}
+          label={t("email")}
           sx={{ width: "100%" }}
           {...register("email", { required: "Email is required" })}
           error={!!errors.email}
@@ -90,7 +92,7 @@ const ResetPassword = () => {
           sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
           disabled={isSubmitting || !isValid}
         >
-          Reset Password
+          {t("reset-password")}
         </Button>
       </Stack>
     </>

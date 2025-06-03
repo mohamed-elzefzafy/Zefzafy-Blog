@@ -117,19 +117,58 @@
     "categories": "Categories",
     "add-category": "Add Category"
   },
-    "add-category": {
-      "title": "Title",
-      "add-category": "Add Category"
+  "add-category": {
+    "title": "Title",
+    "add-category": "Add Category"
   },
-      "update-category": {
-      "title": "Title",
-      "update-category": "Update Category"
+  "update-category": {
+    "title": "Title",
+    "update-category": "Update Category"
   },
   "Comments-Table-page": {
     "serial": "Serial",
     "comment": "Comment",
     "post": "Post",
     "remove": "Remove",
-      "comments" : "Comments"
+    "comments": "Comments"
+  },
+  "register": {
+    "register": "Register",
+    "first-name": "FirstName",
+    "last-name": "LastName",
+    "email": "Email",
+    "password": "Password",
+    "profile-image": "Profile Image",
+    "if-you-have-account-already-please": "if you have account already please",
+    "login": "login"
+  },
+  "login": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "register-": "Register",
+    "if-you-don't-have-account-please": "if you don&apos;t have account please",
+    "register": "Register",
+    "if-you-forgot-your-password-please-go": "if you forgot your password please go",
+    "here": "here",
+    "thanks": "thanks",
+    "for-register-please": "for register please",
+    "login-": "login"
+  },
+  "logVerify-your-accountin": {
+    "verify-your-account": "Verify Your Account",
+    "Send-code-to-my-email": "Send code to my email"
+  },
+  "Verify-email": {
+    "verify-email": "Verify Email",
+    "verification-code": "Verification Code",
+    "Verify-code": "Verify Code",
+    "email": "Email",
+    "for-registering-please-verify-your-email": "for registering, please verify your email"
+  },
+  "reset-password": {
+    "reset-password": "Reset Password",
+    "email": "Email"
   }
 }
+

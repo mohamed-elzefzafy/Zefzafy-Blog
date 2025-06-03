@@ -2,6 +2,7 @@
 import { useRegisterUserMutation } from "@/redux/slices/api/authApiSlice";
 import { UserRegister } from "@/types/auth";
 import { Button, Stack, TextField, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ const RegisterPage = () => {
   const router = useRouter();
   const [registerUser] = useRegisterUserMutation();
   const [profileImage, setProfileImage] = useState<File | null>();
+    const t = useTranslations("register");
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -66,12 +68,12 @@ const RegisterPage = () => {
       }}
     >
       <Typography variant="h6" component="h2">
-        Register
+        {t("register")}
       </Typography>
       <TextField
         type="text"
-        placeholder="FirstName"
-        label="FirstName"
+        placeholder={t("first-name")}
+        label={t("first-name")}
         sx={{ width: "100%" }}
         {...register("firstName", { required: "first name is required" })}
         error={errors.firstName ? true : false}
@@ -79,8 +81,8 @@ const RegisterPage = () => {
       />
       <TextField
         type="text"
-        placeholder="LastName"
-        label="LastName"
+        placeholder={t("last-name")}
+        label={t("last-name")}
         sx={{ width: "100%" }}
         {...register("lastName", { required: "Last name is required" })}
         error={errors.lastName ? true : false}
@@ -89,8 +91,8 @@ const RegisterPage = () => {
 
       <TextField
         type="email"
-        placeholder="Email"
-        label="Email"
+        placeholder={t("email")}
+        label={t("email")}
         sx={{ width: "100%" }}
         {...register("email", { required: "email is required" })}
         error={errors.email ? true : false}
@@ -99,8 +101,8 @@ const RegisterPage = () => {
 
       <TextField
         type="password"
-        placeholder="Password"
-        label="Password"
+        placeholder={t("password")}
+        label={t("password")}
         sx={{ width: "100%" }}
         {...register("password", { required: "password is required" })}
         error={errors.password ? true : false}
@@ -117,7 +119,7 @@ const RegisterPage = () => {
         />
       )}
       <TextField
-        label="Profile Image"
+        label={t("profile-image")}
         type="file"
         onChange={handleImageChange}
         fullWidth
@@ -131,12 +133,12 @@ const RegisterPage = () => {
         sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
         disabled={isSubmitting || !isValid}
       >
-        Register
+        {t("register")}
       </Button>
       <Typography>
-        if you have account already please{" "}
+        {t("if-you-have-account-already-please")}{" "}
         <Typography component={Link} href="/auth/login">
-          Login
+          {t("login")}
         </Typography>{" "}
       </Typography>
     </Stack>

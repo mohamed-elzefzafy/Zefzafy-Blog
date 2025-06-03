@@ -2,6 +2,7 @@
 import { useAppSelector } from '@/redux/hooks';
 import { useVerifyAccountMutation } from '@/redux/slices/api/authApiSlice';
 import { Button, Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { redirect, useRouter } from 'next/navigation';
 import React from 'react'
 import toast from 'react-hot-toast';
@@ -11,6 +12,7 @@ const VerifyAccountPage = () => {
     if (userInfo.isAccountVerified) redirect("/");
     const router = useRouter();
     const [verifyAccount] = useVerifyAccountMutation();
+      const t = useTranslations("logVerify-your-accountin");
 
     const handleVerifyAccount = async() => {
       try {
@@ -37,7 +39,7 @@ const VerifyAccountPage = () => {
         }}
       >
         <Typography variant="h6" component="h2">
-        Verify Your Account
+      {t("verify-your-account")}
         </Typography>
 
   
@@ -50,7 +52,7 @@ const VerifyAccountPage = () => {
           onClick={handleVerifyAccount}
           // disabled={}
         >
-          Send code to my email : {userInfo.email}
+            {t("Send-code-to-my-email")} : {userInfo.email}
         </Button>
 
       </Stack>
