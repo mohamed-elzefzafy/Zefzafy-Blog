@@ -175,42 +175,96 @@ export class PostService {
     return post;
   }
 
+  // public async update(
+  //   id: number,
+  //   updatePostDto: UpdatePostDto,
+  //   user: JwtPayloadType,
+  //   file: Express.Multer.File,
+  // ) {
+  //   const post = await this.findOne(id);
+  //   if (!post) throw new NotFoundException('post not found');
+
+  //   if (post.user.id !== user.id) {
+  //     throw new UnauthorizedException(
+  //       'you cannot update post belong to another user',
+  //     );
+  //   }
+
+  //   if (updatePostDto.category) {
+  //     const category = await this.categoryService.findOne(
+  //       updatePostDto.category,
+  //     );
+  //     if (!category) throw new NotFoundException('category not found');
+  //   }
+
+  //   Object.assign(post, updatePostDto);
+  //   if (file) {
+  //     if (post.image !== null) {
+  //       await this.cloudinaryService.removeImage(post.image.public_id);
+  //     }
+  //     const result = await this.cloudinaryService.uploadImage(file, 'posts');
+  //     post.image = {
+  //       url: result.secure_url,
+  //       public_id: result.public_id,
+  //     };
+  //   }
+  //   await this.postRepositry.save(post);
+  //   return post;
+  // }
+
+
   public async update(
-    id: number,
-    updatePostDto: UpdatePostDto,
-    user: JwtPayloadType,
-    file: Express.Multer.File,
-  ) {
-    const post = await this.findOne(id);
-    if (!post) throw new NotFoundException('post not found');
+  id: number,
+  updatePostDto: UpdatePostDto,
+  user: JwtPayloadType,
+  file: Express.Multer.File,
+) {
+  const post = await this.findOne(id);
+  if (!post) throw new NotFoundException('post not found');
 
-    if (post.user.id !== user.id) {
-      throw new UnauthorizedException(
-        'you cannot update post belong to another user',
-      );
-    }
-
-    if (updatePostDto.category) {
-      const category = await this.categoryService.findOne(
-        updatePostDto.category,
-      );
-      if (!category) throw new NotFoundException('category not found');
-    }
-
-    Object.assign(post, updatePostDto);
-    if (file) {
-      if (post.image !== null) {
-        await this.cloudinaryService.removeImage(post.image.public_id);
-      }
-      const result = await this.cloudinaryService.uploadImage(file, 'posts');
-      post.image = {
-        url: result.secure_url,
-        public_id: result.public_id,
-      };
-    }
-    await this.postRepositry.save(post);
-    return post;
+  if (post.user.id !== user.id) {
+    throw new UnauthorizedException(
+      'you cannot update post belong to another user',
+    );
   }
+
+  if (updatePostDto.category) {
+    const category = await this.categoryService.findOne(
+      updatePostDto.category,
+    );
+    if (!category) throw new NotFoundException('category not found');
+  }
+
+  if (file) {
+    if (post.image?.public_id) {
+      try {
+        const removeResult = await this.cloudinaryService.removeImage(post.image.public_id);
+        if (removeResult.result !== 'ok') {
+        }
+      } catch (error) {
+        // Continue with upload, but log the error
+        console.log(error);
+        
+      }
+    } else {
+      console.warn('No public_id found for the current image');
+    }
+
+    // Upload new image
+    const result = await this.cloudinaryService.uploadImage(file, 'posts');
+
+    post.image = {
+      url: result.secure_url,
+      public_id: result.public_id,
+    };
+  }
+
+  Object.assign(post, updatePostDto);
+
+  // Save to database
+  await this.postRepositry.save(post);
+  return post;
+}
 
   public async remove(id: number) {
     const post = await this.findOne(id);
