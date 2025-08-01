@@ -15,33 +15,25 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params
+  params,
 }: Readonly<{
   children: React.ReactNode;
-    params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>;
 }>) {
-
-    const { locale } = await params;
+  const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
   return (
     <html lang="en" dir="ltr">
       <body className={inter.className}>
-        
-  <NextIntlClientProvider>  
-    <Providers>
-          <CssBaseline />
-      {children}
+        <NextIntlClientProvider>
+          <Providers>
+            <CssBaseline />
+            {children}
           </Providers>
-      </NextIntlClientProvider>
-      
-    
+        </NextIntlClientProvider>
       </body>
     </html>
   );
 }
-
-
-
-
