@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import 'react-quill/dist/quill.snow.css';
 import { CssBaseline } from "@mui/material";
 import Providers from "@/utils/Provider";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
