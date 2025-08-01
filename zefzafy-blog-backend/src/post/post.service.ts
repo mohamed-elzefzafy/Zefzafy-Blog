@@ -54,49 +54,6 @@ export class PostService {
     return post;
   }
 
-  // async findAll({
-  //   page,
-  //   limit,
-  //   search,
-  //   category,
-  // }: {
-  //   page: number;
-  //   limit: number;
-  //   search: string;
-  //   category: string;
-  // }) {
-  //   const query = this.postRepositry
-  //     .createQueryBuilder('post')
-  //     .leftJoinAndSelect('post.category', 'category')
-  //     .leftJoinAndSelect('post.user', 'user')
-  //     .leftJoinAndSelect('post.comments', 'comments');
-
-  //   if (category) {
-  //     if (search) {
-  //       query.andWhere('category.id = :category', { category });
-  //     } else {
-  //       query.where('category.id = :category', { category });
-  //     }
-  //   }
-
-  //   if (search) {
-  //     query.where('post.title ILIKE :search OR post.content ILIKE :search', {
-  //       search: `%${search}%`,
-  //     });
-  //   }
-
-  //   query.skip((page - 1) * limit).take(limit);
-
-  //   const [posts, total] = await query.getManyAndCount();
-  //   const pagesCount = Math.ceil(total / limit);
-
-  //   const pagination = { total, page, limit, pagesCount };
-
-  //   return {
-  //     posts,
-  //     pagination,
-  //   };
-  // }
 
   async findAll({
     page,
@@ -117,7 +74,6 @@ export class PostService {
       .leftJoinAndSelect('post.user', 'user')
       .leftJoinAndSelect('post.comments', 'comments');
 
-    // استخدم متغير لتجميع الشروط
     const whereConditions: string[] = [];
     const parameters: Record<string, any> = {};
 
@@ -175,42 +131,7 @@ export class PostService {
     return post;
   }
 
-  // public async update(
-  //   id: number,
-  //   updatePostDto: UpdatePostDto,
-  //   user: JwtPayloadType,
-  //   file: Express.Multer.File,
-  // ) {
-  //   const post = await this.findOne(id);
-  //   if (!post) throw new NotFoundException('post not found');
 
-  //   if (post.user.id !== user.id) {
-  //     throw new UnauthorizedException(
-  //       'you cannot update post belong to another user',
-  //     );
-  //   }
-
-  //   if (updatePostDto.category) {
-  //     const category = await this.categoryService.findOne(
-  //       updatePostDto.category,
-  //     );
-  //     if (!category) throw new NotFoundException('category not found');
-  //   }
-
-  //   Object.assign(post, updatePostDto);
-  //   if (file) {
-  //     if (post.image !== null) {
-  //       await this.cloudinaryService.removeImage(post.image.public_id);
-  //     }
-  //     const result = await this.cloudinaryService.uploadImage(file, 'posts');
-  //     post.image = {
-  //       url: result.secure_url,
-  //       public_id: result.public_id,
-  //     };
-  //   }
-  //   await this.postRepositry.save(post);
-  //   return post;
-  // }
 
 
   public async update(

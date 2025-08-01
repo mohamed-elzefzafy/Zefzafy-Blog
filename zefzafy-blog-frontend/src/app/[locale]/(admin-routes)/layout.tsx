@@ -29,10 +29,28 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
   }, [router, userInfo.email, userInfo.isAccountVerified, userInfo.role]);
 
   return (
-    <Box sx={{ display: 'flex' , gap : 0 }}>
-      <DrawerComponent drawerOptions={AdminDashboardArrayList} />
-        {children}
-    </Box>
+    // <Box sx={{ display: 'flex' , gap : 0 }}>
+    //   <DrawerComponent drawerOptions={AdminDashboardArrayList} />
+    //     {children}
+    // </Box>
+
+        <Box sx={{ display: 'flex', width: '100%', minHeight: '100vh' }}>
+  <DrawerComponent drawerOptions={AdminDashboardArrayList} />
+
+  <Box
+    component="main"
+    sx={{
+      flexGrow: 1,            // this makes sure the main content takes remaining space
+      p: 2,                   // optional: padding inside main area
+      overflowX: 'hidden',    // optional: prevents horizontal scroll
+      overflowY: 'auto',      // optional: allow vertical scrolling
+      maxWidth: '100%',       // prevents growing too wide
+    }}
+  >
+    {children}
+  </Box>
+</Box>
+    
   );
 };
 
