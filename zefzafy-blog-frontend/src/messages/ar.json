@@ -142,7 +142,8 @@
     "profile-image": "الصوره الشخصيه",
     "if-you-have-account-already-please": "إذا كان لديك حساب بالفعل يرجى",
     "login": "تسجيل الدخول",
-      "confirm-password" : "تأكيد الرقم السرى"
+      "confirm-password" : "تأكيد الرقم السرى",
+      "update-password" : "تحديث الرقم السرى"
   },
   "login": {
     "login": "تسجيل الدخول",

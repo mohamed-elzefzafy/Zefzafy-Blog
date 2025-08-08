@@ -3,6 +3,7 @@ import { useUpdatePasswordMutation } from "@/redux/slices/api/authApiSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
+  CircularProgress,
   IconButton,
   InputAdornment,
   Stack,
@@ -162,15 +163,22 @@ const UpdatePassord = () => {
         }}
       />
 
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
-        disabled={isSubmitting || !isValid}
-      >
-        Update Passord
-      </Button>
+  
+
+
+          <Button
+                              type="submit"
+                              variant="contained"
+                              fullWidth
+                                disabled={isSubmitting || !isValid}
+                              sx={{ textTransform: "capitalize", position: "relative" }}
+                            >
+                              {isSubmitting ? (
+                                <CircularProgress size={24} sx={{ color: "white" }} />
+                              ) : (
+                                t("update-password")
+                              )}
+                            </Button>
     </Stack>
   );
 };

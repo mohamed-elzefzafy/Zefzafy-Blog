@@ -142,7 +142,8 @@
     "profile-image": "Profile Image",
     "if-you-have-account-already-please": "already have account please",
     "login": "login",
-    "confirm-password" : "confirm password"
+    "confirm-password" : "confirm password",
+    "update-password" : "update password"
   },
   "login": {
     "login": "Login",

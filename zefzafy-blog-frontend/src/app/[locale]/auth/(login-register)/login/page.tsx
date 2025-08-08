@@ -14,6 +14,7 @@ import {
   useTheme,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
 import { useTranslations } from "next-intl";
@@ -148,15 +149,19 @@ const LoginPage = () => {
           }}
         />
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
-          disabled={isSubmitting || !isValid}
-        >
-          {t("login")}
-        </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                  disabled={isSubmitting || !isValid}
+                sx={{ textTransform: "capitalize", position: "relative" }}
+              >
+                {isSubmitting ? (
+                  <CircularProgress size={24} sx={{ color: "white" }} />
+                ) : (
+                  t("login")
+                )}
+              </Button>
 
         <Typography
           variant="body2"

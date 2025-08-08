@@ -1,6 +1,6 @@
 "use client";
 import { useResetPasswordMutation } from "@/redux/slices/api/authApiSlice";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Stack, TextField, Typography } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -85,15 +85,21 @@ const ResetPassword = () => {
           helperText={errors.email?.message}
         />
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
-          disabled={isSubmitting || !isValid}
-        >
-          {t("reset-password")}
-        </Button>
+      
+
+            <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                          disabled={isSubmitting || !isValid}
+                        sx={{ textTransform: "capitalize", position: "relative" }}
+                      >
+                        {isSubmitting ? (
+                          <CircularProgress size={24} sx={{ color: "white" }} />
+                        ) : (
+                          t("reset-password")
+                        )}
+                      </Button>
       </Stack>
     </>
   );
