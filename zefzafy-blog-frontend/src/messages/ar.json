@@ -60,7 +60,8 @@
     "role": "الصفه",
     "posts": "مقالات",
     "delete-my-account": "حذف حسابى",
-    "Edit-user-profile": "تعديل حسابى"
+    "Edit-user-profile": "تعديل حسابى",
+    "My Posts" : "مقالاتى"
   },
   "UpdateProfilePage": {
     "update-profile": "تعديل حسابى",

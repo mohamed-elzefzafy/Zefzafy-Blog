@@ -38,7 +38,7 @@ const VerifyAccountPage = () => {
           gap: 2,
         }}
       >
-        <Typography variant="h6" component="h2">
+        <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
       {t("verify-your-account")}
         </Typography>
 
@@ -46,13 +46,14 @@ const VerifyAccountPage = () => {
 
         <Button
           // type="submit"
+          size='large'
           variant="contained"
           color="primary"
           sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
           onClick={handleVerifyAccount}
           // disabled={}
         >
-            {t("Send-code-to-my-email")} : {userInfo.email}
+            {t("Send-code-to-my-email")} 
         </Button>
 
       </Stack>

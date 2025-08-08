@@ -220,7 +220,6 @@
 //           </Typography>
 //         </Box>
 
-
 //         {userInfo.id === user?.id && (
 //           <Stack
 //             direction={"row"}
@@ -290,8 +289,6 @@
 // };
 
 // export default ProfilePage;
-
-
 
 "use client";
 import {
@@ -413,116 +410,116 @@ const ProfilePage = ({ params }: { params: Promise<{ userId: string }> }) => {
           <Box sx={{ my: 5 }}></Box>
         )}
 
-<Stack>
-          {/* Name & Email */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            alignItems: { xs: "flex-start", sm: "center" },
-            justifyContent: { xs: "flex-start", sm: "center" },
-            width: "100%",
-            gap: { xs: 1, md: 2 },
-            mt: 2,
-          }}
-        >
-          <Typography
+        <Stack>
+          <Box
             sx={{
-              fontSize: { xs: "16px", md: "20px" },
-            }}
-          >
-            <Typography
-              component="span"
-              sx={{
-                fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
-              }}
-            >
-              {t("name")} :
-            </Typography>{" "}
-            {user?.firstName + " " + user?.lastName}
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: { xs: "16px", md: "20px" },
-            }}
-          >
-            <Typography
-              component="span"
-              sx={{
-                fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
-              }}
-            >
-              {t("email")} :
-            </Typography>{" "}
-            {user?.email}
-          </Typography>
-        </Box>
-
-        {/* Since & Role */}
-      <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            alignItems: { xs: "flex-start", sm: "center" },
-            justifyContent: { xs: "flex-start", sm: "center" },
-            width: "100%",
-            gap: { xs: 1, md: 2 },
-            mt: 2,
-          }}
-        >
-          <Stack
-            sx={{
-              flexDirection: "row",
-              gap: 1,
-              alignItems: "center",
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "flex-start", sm: "center" },
+              justifyContent: { xs: "flex-start", sm: "center" },
+              width: "100%",
+              gap: { xs: 1, md: 2 },
+              mt: 2,
             }}
           >
             <Typography
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
               }}
             >
-              {t("registerd-at")}
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "primary.main",
+                }}
+              >
+                {t("name")} :
+              </Typography>{" "}
+              {user?.firstName + " " + user?.lastName}
             </Typography>
 
             <Typography
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "secondary.main",
               }}
             >
-              : {user?.createdAt.substring(0, 10)}
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "primary.main",
+                }}
+              >
+                {t("email")} :
+              </Typography>{" "}
+              {user?.email}
             </Typography>
-          </Stack>
+          </Box>
 
-          <Typography
+          {/* Since & Role */}
+          <Box
             sx={{
-              fontSize: { xs: "16px", md: "20px" },
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "flex-start", sm: "center" },
+              justifyContent: { xs: "flex-start", sm: "center" },
+              width: "100%",
+              gap: { xs: 1, md: 2 },
+              mt: 2,
             }}
           >
-            <Typography
-              component="span"
+            <Stack
               sx={{
-                fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
+                flexDirection: "row",
+                gap: 1,
+                alignItems: "center",
               }}
             >
-              {t("role")} :
-            </Typography>{" "}
-            {user?.role}
-          </Typography>
-        </Box>
+              <Typography
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "primary.main",
+                }}
+              >
+                {t("registerd-at")}
+              </Typography>
 
-</Stack>
+              <Typography
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "secondary.main",
+                }}
+              >
+                : {user?.createdAt.substring(0, 10)}
+              </Typography>
+            </Stack>
+
+            {user?.role !== "user" && (
+              <Typography
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                }}
+              >
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: { xs: "16px", md: "20px" },
+                    fontWeight: "bold",
+                    color: "primary.main",
+                  }}
+                >
+                  {t("role")} :
+                </Typography>{" "}
+                {user?.role}
+              </Typography>
+            )}
+          </Box>
+        </Stack>
         {/* Profile actions */}
         {userInfo.id === user?.id && (
           <Stack
@@ -554,11 +551,13 @@ const ProfilePage = ({ params }: { params: Promise<{ userId: string }> }) => {
         {/* Posts */}
         <Typography
           variant="h6"
-          sx={{ color: "primary.main", fontWeight: "bold" }}
+          sx={{ color: "primary.main", fontWeight: "bold", mt: 2 }}
         >
           {postsResponse?.posts && postsResponse?.posts?.length < 1
             ? "No Posts for this user"
-            : `${user?.firstName} ${t("posts")} : `}
+            : userInfo.id === user?.id
+            ? t("My Posts")
+            : `${user?.firstName} ${t("posts")}  `}
         </Typography>
 
         <Stack sx={{ width: "100%" }}>

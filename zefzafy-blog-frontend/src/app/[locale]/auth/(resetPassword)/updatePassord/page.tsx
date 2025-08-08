@@ -1,7 +1,17 @@
 "use client";
 import { useUpdatePasswordMutation } from "@/redux/slices/api/authApiSlice";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -13,18 +23,33 @@ interface IUpdatePassord {
 
 const UpdatePassord = () => {
   const router = useRouter();
+  const t = useTranslations("register");
   const [updatePassword] = useUpdatePasswordMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { isValid, isSubmitting, errors },
-  } = useForm<IUpdatePassord>();
+  } = useForm<IUpdatePassord & { confirmPassword: string }>();
 
-  const onSubmit = async (values: IUpdatePassord) => {
+  const onSubmit = async (
+    values: IUpdatePassord & { confirmPassword: string }
+  ) => {
+        if (values.newPassword !== values.confirmPassword) {
+          toast.error("Passwords do not match");
+          return;
+        }
+    
     try {
-      const { user } = await updatePassword(values).unwrap();
+      const { user } = await updatePassword({
+  email: values.email,
+  verificationCode: values.verificationCode,
+  newPassword: values.newPassword,
+}).unwrap();
       toast.success("you reset your password please login");
       router.push(`/auth/login?userNameFromUpdatePassword=${user?.firstName}`);
       reset();
@@ -73,7 +98,7 @@ const UpdatePassord = () => {
         error={!!errors.verificationCode}
         helperText={errors.verificationCode?.message}
       />
-
+      {/* 
       <TextField
         type="password"
         placeholder="Password"
@@ -82,6 +107,59 @@ const UpdatePassord = () => {
         {...register("newPassword", { required: "password is required" })}
         error={errors.newPassword ? true : false}
         helperText={errors.newPassword && "password is required"}
+      /> */}
+
+      <TextField
+        type={showPassword ? "text" : "password"}
+        placeholder={t("password")}
+        label={t("password")}
+        sx={{ width: "100%" }}
+        {...register("newPassword", { required: "password is required" })}
+        error={!!errors.newPassword}
+        helperText={errors.newPassword?.message}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
+
+      {/* Confirm Password field with Eye icon */}
+      <TextField
+        type={showConfirmPassword ? "text" : "password"}
+        placeholder={t("confirm-password")}
+        label={t("confirm-password")}
+        sx={{ width: "100%" }}
+        {...register("confirmPassword", {
+          required: "Confirm password is required",
+          validate: (value) =>
+            value === watch("newPassword") || "Passwords do not match",
+        })}
+        error={!!errors.confirmPassword}
+        helperText={errors.confirmPassword?.message}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
       />
 
       <Button

@@ -60,7 +60,8 @@
     "role": "Role",
     "posts": "Posts",
     "delete-my-account": "Delete My Account",
-    "Edit-user-profile": "Edit User Profile"
+    "Edit-user-profile": "Edit User Profile",
+    "My Posts" : "My Posts"
   },
   "UpdateProfilePage": {
     "update-profile": "Update Profile",

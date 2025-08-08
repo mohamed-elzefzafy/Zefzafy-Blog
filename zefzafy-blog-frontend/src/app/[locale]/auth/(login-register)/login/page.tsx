@@ -3,6 +3,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useLoginMutation } from "@/redux/slices/api/authApiSlice";
 import { setCredentials } from "@/redux/slices/authSlice";
 import { UserLogin } from "@/types/auth";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -11,11 +12,14 @@ import {
   Typography,
   Link as MuiLink,
   useTheme,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -24,6 +28,7 @@ const LoginPage = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
+  const [showPassword, setShowPassword] = useState(false);
   const userNameQuery = searchParams.get("userName");
   const userNameQueryFromUpdatePassword = searchParams.get(
     "userNameFromUpdatePassword"
@@ -95,7 +100,7 @@ const LoginPage = () => {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          maxWidth: { xs: "70%", sm: "60%" ,md:"40%",lg:"30%"},
+          maxWidth: { xs: "70%", sm: "60%", md: "40%", lg: "30%" },
           mx: "auto",
           mt: 5,
           display: "flex",
@@ -120,13 +125,27 @@ const LoginPage = () => {
         />
 
         <TextField
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder={t("password")}
           label={t("password")}
           sx={{ width: "100%" }}
           {...register("password", { required: "password is required" })}
           error={errors.password ? true : false}
           helperText={errors.password && "password is required"}
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
 
         <Button
