@@ -12,6 +12,7 @@ import { Delete } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import {
   useDeletePostAdminPageMutation,
+  useGetPostsAdminQuery,
   useGetPostsQuery,
 } from "@/redux/slices/api/postApiSlice";
 // import PaginationComponent from "@/app/components/PaginationComponent";
@@ -25,7 +26,7 @@ import { useTranslations } from "next-intl";
 const AdminPostsPage = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useGetPostsQuery(`?page=${currentPage}`);
+  const { data , isLoading } = useGetPostsAdminQuery(`?page=${currentPage}`);
   const [deletePostAdminPage] = useDeletePostAdminPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -207,6 +208,7 @@ const AdminPostsPage = () => {
           autoPageSize={isSmallScreen}
           pageSizeOptions={[5, 10, 20]}
           disableColumnMenu={isSmallScreen}
+          loading={isLoading}
           sx={{
             fontSize: isSmallScreen ? "12px" : "14px",
             "& .MuiDataGrid-cell": {

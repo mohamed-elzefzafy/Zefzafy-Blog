@@ -38,7 +38,7 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
     width: "auto",
     minWidth: "200px",
   },
@@ -55,6 +55,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  fontSize: "14px",
   color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {
@@ -62,6 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
+      fontSize: "16px",
       width: "12ch",
       "&:focus": {
         width: "20ch",
@@ -98,6 +100,30 @@ const t = useTranslations("HomePage");
   return (
     <Container>
       <Stack sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 2 }}>
+
+              <SearchParamComponent returnPath="/admin-dashboard/categories" />
+        <Box
+          sx={{
+            width: "100%",
+            aspectRatio: "16/9",
+            overflow: "hidden",
+            "& img": {
+              objectFit: "cover",
+              width: "100%",
+              height: "100%",
+            },
+          }}
+        >
+          <Image
+            alt="hero"
+            src="/hero_image.jpg"
+            width={1920}
+            height={1080}
+            quality={100}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </Box>
+        
         <Grid
           container
           spacing={2}
@@ -105,6 +131,7 @@ const t = useTranslations("HomePage");
             alignItems: "space-between",
             justifyContent: "center",
             mb: 2,
+            mt: 3,
             width: { xs: "100%", sm: "80%", md: "60%" },
           }}
         >
@@ -164,28 +191,7 @@ const t = useTranslations("HomePage");
             </FormControl>
           </Grid>
         </Grid>
-        <SearchParamComponent returnPath="/admin-dashboard/categories" />
-        <Box
-          sx={{
-            width: "100%",
-            aspectRatio: "16/9",
-            overflow: "hidden",
-            "& img": {
-              objectFit: "cover",
-              width: "100%",
-              height: "100%",
-            },
-          }}
-        >
-          <Image
-            alt="hero"
-            src="/hero_image.jpg"
-            width={1920}
-            height={1080}
-            quality={100}
-            style={{ width: "100%", height: "100%" }}
-          />
-        </Box>
+  
         {userInfo.email && (
           <Box
             sx={{

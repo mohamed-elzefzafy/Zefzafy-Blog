@@ -18,13 +18,13 @@ const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
   const router = useRouter();
   const [toggleLikeComment] = useToggleLikeCommentMutation();
   const { userInfo } = useAppSelector((state) => state.auth);
-  const onToggleLikePost = async () => {
+  const onToggleLikeComment = async () => {
     try {
-      await toggleLikeComment(comment.id).unwrap();
-      // toast.success("you have liked the post successfully");
+      await toggleLikeComment(comment?.id).unwrap();
+      // toast.success("you have liked the Comment successfully");
       router.refresh();
     } catch (error) {
-      toast.error("Failed to like the post");
+      toast.error("Failed to like the comment");
       console.error(error);
     }
   };
@@ -33,7 +33,6 @@ const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const t = useTranslations("postPage");
-
 
   return (
     <Stack
@@ -49,7 +48,7 @@ const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
         data={comment}
         open={open}
         setOpen={setOpen}
-          likedType={`${t("comment-inlikes")}`}
+        likedType={`${t("comment-inlikes")}`}
       />
 
       {comment?.likes?.find((like) => like.id === userInfo.id) ? (
@@ -63,7 +62,7 @@ const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
                 "&:hover": { fontSize: "31px" },
                 transition: "all 0.3s ease-in-out",
               }}
-              onClick={onToggleLikePost}
+              onClick={onToggleLikeComment}
             />
           )}
         </>
@@ -78,7 +77,7 @@ const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
                 "&:hover": { fontSize: "31px" },
                 transition: "all 0.3s ease-in-out",
               }}
-              onClick={onToggleLikePost}
+              onClick={onToggleLikeComment}
             />
           )}
         </>
@@ -96,9 +95,9 @@ const ToggleLikeComment = ({ comment }: { comment: IComments }) => {
         {" "}
         <Typography
           component={"span"}
-          sx={{ color: "error.main", fontWeight: "bold", fontSize: "20px" }}
+          sx={{ color: "primary.main", fontWeight: "bold", fontSize: "20px" }}
         >
-          {comment?.likes?.length}
+          {comment?.likes?.length} 
         </Typography>{" "}
         {comment?.likes?.length > 1 ? t("likes") : t("like")}
       </Typography>

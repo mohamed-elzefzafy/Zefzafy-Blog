@@ -175,7 +175,7 @@ const CreateAndDisplayComments = ({ post }: { post: IPost }) => {
 
             <Typography
               variant="body1"
-              sx={{ mb: 2, color: "error.main", fontWeight: "bold" }}
+              sx={{ mb: 2, color: "primary.main", fontWeight: "bold" }}
             >
               {comment.createdAt.substring(0, 10)}
             </Typography>

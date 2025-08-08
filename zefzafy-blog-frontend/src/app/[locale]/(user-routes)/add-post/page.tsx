@@ -3,8 +3,10 @@ import { useGetCategoriesQuery } from "@/redux/slices/api/categoryApiSlice";
 import { useCreatePostMutation } from "@/redux/slices/api/postApiSlice";
 import { IPostData } from "@/types/post";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
+import ImageIcon from "@mui/icons-material/Image";
 import {
   Button,
+  CircularProgress,
   FormControl,
   FormHelperText,
   IconButton,
@@ -149,22 +151,48 @@ const AddPostPage = () => {
           alt="post Image"
         />
       )}
-      <TextField
+      {/* <TextField
         label="Profile Image"
         type="file"
         onChange={handleImageChange}
         fullWidth
         margin="normal"
-      />
+      /> */}
 
-      <Button
+          <Button
+        component="label"
+        variant="outlined"
+        fullWidth
+        sx={{ textTransform: "capitalize" }}
+        startIcon={<ImageIcon />}
+      >
+        {image ? "post image selected" : "Upload post image"}
+        <input
+          type="file"
+          hidden
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+      </Button>
+
+
+            <Button
         type="submit"
         variant="contained"
-        color="primary"
-        sx={{ mt: 2, textTransform: "capitalize", width: "100%" }}
+        fullWidth
         disabled={isSubmitting}
+        sx={{ textTransform: "capitalize", position: "relative" }}
       >
-      {t("add-Post")}
+        {isSubmitting ? (
+          <CircularProgress
+            size={24}
+            sx={{
+              color: "white",
+            }}
+          />
+        ) : (
+            t("add-Post")
+        )}
       </Button>
     </Stack>
   );

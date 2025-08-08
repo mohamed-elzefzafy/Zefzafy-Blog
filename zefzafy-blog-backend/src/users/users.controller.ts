@@ -17,7 +17,7 @@ import { UpdateUserDto } from '../auth/dtos/update-user.dto';
 import { Roles } from 'src/auth/decorator/Roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { UserRoles } from 'src/common/enums/roles.enum';
-import { PAGE_LIMIT_ADMIN } from 'src/common/constants';
+import { PAGE_LIMIT } from 'src/common/constants';
 
 @Controller('users')
 export class UsersController {
@@ -28,7 +28,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   findAll(
     @Query('page') page: string = '1',
-    @Query('limit') limit: string = `${PAGE_LIMIT_ADMIN}`,
+    @Query('limit') limit: string = `${PAGE_LIMIT}`,
   ) {
     return this.usersService.findAll(+page, +limit);
   }

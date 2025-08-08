@@ -14,7 +14,10 @@ import PaginationComponent from "@/app/[locale]/components/PaginationComponent";
 import toast from "react-hot-toast";
 import swal from "sweetalert";
 import { useRouter } from "next/navigation";
-import { useDeleteUserAdminPageMutation, useGetUsersQuery } from "@/redux/slices/api/userApiSlice";
+import {
+  useDeleteUserAdminPageMutation,
+  useGetUsersQuery,
+} from "@/redux/slices/api/userApiSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -22,11 +25,11 @@ import { useTranslations } from "next-intl";
 const AdminUsersPage = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useGetUsersQuery(`?page=${currentPage}`);
+  const { data, isLoading } = useGetUsersQuery(`?page=${currentPage}`);
   const [deleteUserAdminPage] = useDeleteUserAdminPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-    const t = useTranslations("Users-Table-page");
+  const t = useTranslations("Users-Table-page");
 
   const columns: GridColDef[] = [
     {
@@ -38,7 +41,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "name",
-      headerName:  t("name"),
+      headerName: t("name"),
       flex: isSmallScreen ? 0.8 : 1,
       minWidth: isSmallScreen ? 120 : 150,
       align: "center",
@@ -64,27 +67,37 @@ const AdminUsersPage = () => {
         </Box>
       ),
     },
-      {
+    {
       field: "profileImage",
       headerName: t("profile"),
       flex: 1,
       align: "center",
       headerAlign: "center",
-      
+
       renderCell: (params: GridRenderCellParams) => (
         <Image
-        onClick={()=> router.push(`/profile/${params.row.userId}?fromAdminDashBoard=fromAdminDashBoard`)}
+          onClick={() =>
+            router.push(
+              `/profile/${params.row.userId}?fromAdminDashBoard=fromAdminDashBoard`
+            )
+          }
           src={params.value}
           alt="userProfile"
           width={40}
           height={40}
-          style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "50%", cursor : "pointer" }}
+          style={{
+            width: "40px",
+            height: "40px",
+            objectFit: "cover",
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
         />
       ),
     },
     {
       field: "email",
-      headerName:  t("email"),
+      headerName: t("email"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 120,
       align: "center",
@@ -92,7 +105,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "role",
-      headerName:  t("role"),
+      headerName: t("role"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -114,7 +127,7 @@ const AdminUsersPage = () => {
     },
     {
       field: "createdAt",
-      headerName:  t("registerd-at"),
+      headerName: t("registerd-at"),
       flex: isSmallScreen ? 0.6 : 0.8,
       minWidth: isSmallScreen ? 80 : 100,
       align: "center",
@@ -135,19 +148,25 @@ const AdminUsersPage = () => {
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridRenderCellParams) => (
-      <>
-      {params.row?.roleParam === "user" ?
-      (
-          <IconButton
-          onClick={() => onDeletePost({ id: params.value, page: currentPage })}
-          sx={{ padding: isSmallScreen ? "6px" : "8px" }}
-        >
-          <Delete color="error" fontSize={isSmallScreen ? "small" : "medium"} />
-        </IconButton>
-      ) :
-       (<Typography color="error.main" fontWeight={"bold"}>Admin</Typography>)
-       }
-      </>
+        <>
+          {params.row?.roleParam === "user" ? (
+            <IconButton
+              onClick={() =>
+                onDeletePost({ id: params.value, page: currentPage })
+              }
+              sx={{ padding: isSmallScreen ? "6px" : "8px" }}
+            >
+              <Delete
+                color="error"
+                fontSize={isSmallScreen ? "small" : "medium"}
+              />
+            </IconButton>
+          ) : (
+            <Typography color="error.main" fontWeight={"bold"}>
+              Admin
+            </Typography>
+          )}
+        </>
       ),
     },
   ];
@@ -162,7 +181,7 @@ const AdminUsersPage = () => {
       role: user.role,
       createdAt: user.createdAt.substring(0, 10),
       isAccountVerified: user.isAccountVerified ? "Verified" : "Not Verified",
-      profileImage : user.profileImage.url,
+      profileImage: user.profileImage.url,
       Remove: user.id,
     })) || [];
 
@@ -221,7 +240,7 @@ const AdminUsersPage = () => {
           variant={isSmallScreen ? "h6" : "h5"}
           sx={{ my: 1, fontWeight: "bold" }}
         >
-          { t("users")} : 
+          {t("users")} :
         </Typography>
       </Stack>
       <Box
@@ -241,6 +260,7 @@ const AdminUsersPage = () => {
           autoPageSize={isSmallScreen}
           pageSizeOptions={[5, 10, 20]}
           disableColumnMenu={isSmallScreen}
+          loading={isLoading}
           sx={{
             fontSize: isSmallScreen ? "12px" : "14px",
             "& .MuiDataGrid-cell": {

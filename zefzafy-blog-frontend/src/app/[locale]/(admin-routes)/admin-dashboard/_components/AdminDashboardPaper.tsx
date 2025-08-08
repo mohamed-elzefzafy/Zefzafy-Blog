@@ -46,7 +46,7 @@ const AdminDashboardPaper = () => {
   return (
     <>
       <Typography variant="h4" sx={{ mb: 4 , ml:1, mt:1}}>
-        {t("dashboard")} :{" "}
+        {t("dashboard")}  {" "}
       </Typography>
       <Grid container spacing={3}>
         {data.map((item, index) => (

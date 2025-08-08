@@ -24,7 +24,7 @@ import { useTranslations } from "next-intl";
 const AdminCommentsPage = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useGetCommentsAdminQuery(`?page=${currentPage}`);
+  const { data ,isLoading} = useGetCommentsAdminQuery(`?page=${currentPage}`);
   const [deleteCommentAdminAdminDashPage] =
     useDeleteCommentAdminAdminDashPageMutation();
   const theme = useTheme();
@@ -206,6 +206,7 @@ const AdminCommentsPage = () => {
           autoPageSize={isSmallScreen}
           pageSizeOptions={[5, 10, 20]}
           disableColumnMenu={isSmallScreen}
+            loading={isLoading}
           sx={{
             fontSize: isSmallScreen ? "12px" : "14px",
             "& .MuiDataGrid-cell": {

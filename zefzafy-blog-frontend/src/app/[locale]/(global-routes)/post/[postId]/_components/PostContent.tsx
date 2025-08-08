@@ -1,17 +1,16 @@
-import { Box, Container, Stack, Typography } from '@mui/material'
-import SearchParamComponent from './SearchParamComponent'
-import Image from 'next/image'
-import Link from 'next/link'
-import EditPostButton from './EditPostButton'
-import ToggleLikePost from './ToggleLikePost'
-import CreateAndDisplayComments from './CreateAndDisplayComments'
-import { IPost } from '@/types/post'
-import { useTranslations } from 'next-intl'
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import SearchParamComponent from "./SearchParamComponent";
+import Image from "next/image";
+import EditPostButton from "./EditPostButton";
+import ToggleLikePost from "./ToggleLikePost";
+import CreateAndDisplayComments from "./CreateAndDisplayComments";
+import { IPost } from "@/types/post";
+import { useTranslations } from "next-intl";
 
-const PostContent = ({post}:{post:IPost}) => {
+const PostContent = ({ post }: { post: IPost }) => {
   const t = useTranslations("postPage");
   return (
-        <Container sx={{ alignItems: "center", justifyContent: "center" }}>
+    <Container sx={{ alignItems: "center", justifyContent: "center" }}>
       <Stack
         sx={{
           justifyContent: "flex-start",
@@ -44,108 +43,95 @@ const PostContent = ({post}:{post:IPost}) => {
           <Box sx={{ my: 5 }}></Box>
         )}
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: { md: "center" },
-            justifyContent: { md: "center" },
-          }}
-        >
-          <Stack
+        <Stack>
+          <Box
             sx={{
-              marginTop: 1,
-              fontSize: { xs: "16px", md: "20px" },
-              mr: { md: "20px" },
-              flexDirection : "row",
-              gap:2
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "flex-start", sm: "center" },
+              justifyContent: { xs: "flex-start", sm: "center" },
+              width: "100%",
+              gap: { xs: 1, md: 2 },
+              mt: 2,
             }}
           >
             <Typography
-              component="span"
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
               }}
             >
-            {t("written-by")}
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "primary.main",
+                }}
+              >
+                {t("written-by")}
+              </Typography>{" "}
+              : {post.user.firstName + " " + post.user.lastName}
             </Typography>
 
-           <Link href={`/profile/${post?.user.id}`}> {" "}
-            :  {" "}  {post.user.firstName + " " + post.user.lastName}
-            </Link>
-          </Stack>
+            <Typography
+              sx={{
+                fontSize: { xs: "16px", md: "20px" },
+              }}
+            >
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "primary.main",
+                }}
+              >
+                {t("category")}
+              </Typography>{" "}
+              : {post.category.title}
+            </Typography>
+          </Box>
 
-              <Stack
+          {/* Name & Emailllllllllllllll */}
+          <Box
             sx={{
-              marginTop: 1,
-              fontSize: { xs: "16px", md: "20px" },
-              mr: { md: "20px" },
-              flexDirection : "row",
-              gap:2
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "flex-start", sm: "center" },
+              justifyContent: { xs: "flex-start", sm: "center" },
+              width: "100%",
+              gap: { xs: 1, md: 2 },
+              mt: 2,
             }}
           >
             <Typography
-              component="span"
               sx={{
                 fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
               }}
             >
-              {t("category")}
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: { xs: "16px", md: "20px" },
+                  fontWeight: "bold",
+                  color: "primary.main",
+                }}
+              >
+                {t("written-at")}
+              </Typography>{" "}
+              : {post?.createdAt.substring(0, 10)}
             </Typography>
+          </Box>
+        </Stack>
 
-        <Typography>
-          
-          : {post.category.title}
-          </Typography>
-          </Stack>
-        </Box>
-
-          <Stack
-            sx={{
-              marginTop: 1,
-              fontSize: { xs: "16px", md: "20px" },
-              mr: { md: "20px" },
-              flexDirection : "row",
-              gap:2,
-              justifyContent :"center",
-              alignItems : "center"
-            }}
-          >
-            <Typography
-              // component="span"
-              sx={{
-                fontSize: { xs: "16px", md: "20px" },
-                fontWeight: "bold",
-                color: "primary.main",
-              }}
-            >
-              {t("written-at")}
-            </Typography>
-
-      
-        <Typography
-          sx={{
-            fontSize: { xs: "16px", md: "20px", display: "block" },
-            alignContent: "flex-start",
-            fontWeight: "bold",
-            color: "secondary.main",
-          }}
-        >
-      : {post?.createdAt.substring(0, 10)}
-          </Typography>
-          </Stack>
-        
         <EditPostButton postAutherId={post.user.id} postId={post.id} />
+
         <Stack sx={{ mt: 2, alignItems: "flex-start", width: "100%" }}>
           <Typography
             variant="h6"
             sx={{ color: "primary.main", fontWeight: "bold" }}
           >
-            {t("Post-content")} :{" "}
+            {t("Post-content")}{" "}
           </Typography>
           <Typography
             sx={{
@@ -169,13 +155,13 @@ const PostContent = ({post}:{post:IPost}) => {
           >
             {post.comments.length < 1
               ? t("no-comments-on-this-post")
-              : t("post-comments") }
+              : t("post-comments")}
           </Typography>
           <CreateAndDisplayComments post={post} />
         </Stack>
       </Stack>
     </Container>
-  )
-}
+  );
+};
 
-export default PostContent
+export default PostContent;

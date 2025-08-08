@@ -116,6 +116,51 @@ export class PostService {
     };
   }
 
+    async findAllAdmin({
+    page,
+    limit,
+    user,
+  }: {
+    page: number;
+    limit: number;
+    user: string;
+  }) {
+    const query = this.postRepositry
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.category', 'category')
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.comments', 'comments');
+
+    const whereConditions: string[] = [];
+    const parameters: Record<string, any> = {};
+
+    if (user) {
+      whereConditions.push('user.id = :user');
+      parameters.user = user;
+    }
+
+    if (whereConditions.length > 0) {
+      query.where(whereConditions.join(' AND '), parameters);
+    }
+
+    query
+      .orderBy('post.createdAt', 'DESC');
+    query.skip((page - 1) * limit).take(limit);
+
+    const [posts, total] = await query.getManyAndCount();
+    const pagesCount = Math.ceil(total / limit);
+
+    return {
+      posts,
+      pagination: {
+        total,
+        page,
+        limit,
+        pagesCount,
+      },
+    };
+  }
+
   public async findOne(id: number) {
     const post = await this.postRepositry.findOne({
       where: { id },

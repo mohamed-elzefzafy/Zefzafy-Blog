@@ -19,7 +19,7 @@ import { UserRoles } from 'src/common/enums/roles.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/auth/decorator/current-user.decorator';
 import { JwtPayloadType } from 'src/common/types';
-import { PAGE_LIMIT_ADMIN } from 'src/common/constants';
+import { PAGE_LIMIT } from 'src/common/constants';
 
 @Controller('comment')
 export class CommentController {
@@ -39,7 +39,7 @@ export class CommentController {
   @Get()
   findAll(
     @Query('page') page: string = '1',
-    @Query('limit') limit: string = `${PAGE_LIMIT_ADMIN}`,
+    @Query('limit') limit: string = `${PAGE_LIMIT}`,
   ) {
     return this.commentService.findAll(+page, +limit);
   }

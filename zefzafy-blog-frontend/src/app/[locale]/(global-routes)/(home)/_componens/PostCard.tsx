@@ -83,7 +83,7 @@ export default function PostCard({
           flexDirection: { xs: "column", sm: "row" },
           maxWidth: { xs: "100%", sm: 600, md: 700, lg: 500 },
           width: "100%",
-          height: { xs: 350, sm: 300 },
+          height: { xs: 350, sm: 250 },
           wordBreak: "break-word",
           m: { xs: 0, sm: 1 },
           boxShadow: 3,
@@ -96,7 +96,7 @@ export default function PostCard({
             component="img"
             sx={{
               width: { xs: "100%", sm: 160, md: 180 },
-              height: { xs: 150, sm: "auto" },
+              height: { xs: 100, sm: "auto" },
               objectFit: { xs: "cover", sm: "contain" },
             }}
             image={image.url}

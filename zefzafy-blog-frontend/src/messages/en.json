@@ -56,7 +56,7 @@
   "profilePage": {
     "name": "Name ",
     "email": "Email",
-    "registerd-at": "Registerd At",
+    "registerd-at": "Since",
     "role": "Role",
     "posts": "Posts",
     "delete-my-account": "Delete My Account",
@@ -80,10 +80,10 @@
   },
   "Admin-Dashboard": {
     "dashboard": "Admin Dashboard",
-    "posts-table": "Posts Table",
-    "users-table": "Users Table",
-    "categories-table": "Categories Table",
-    "comments-table": "Comments Table",
+    "posts-table": "Posts",
+    "users-table": "Users",
+    "categories-table": "Categories",
+    "comments-table": "Comments",
     "posts": "Posts",
     "users": "Users",
     "categories": "Categories",
@@ -139,16 +139,17 @@
     "email": "Email",
     "password": "Password",
     "profile-image": "Profile Image",
-    "if-you-have-account-already-please": "if you have account already please",
-    "login": "login"
+    "if-you-have-account-already-please": "already have account please",
+    "login": "login",
+    "confirm-password" : "confirm password"
   },
   "login": {
     "login": "Login",
     "email": "Email",
     "password": "Password",
-    "register-": "Register",
-    "if-you-don't-have-account-please": "if you don&apos;t have account please",
-    "register": "Register",
+    "register-": "register",
+    "if-you-don't-have-account-please": "if you don't have account please",
+    "register": "register",
     "if-you-forgot-your-password-please-go": "if you forgot your password please go",
     "here": "here",
     "thanks": "thanks",
@@ -171,4 +172,3 @@
     "email": "Email"
   }
 }
-

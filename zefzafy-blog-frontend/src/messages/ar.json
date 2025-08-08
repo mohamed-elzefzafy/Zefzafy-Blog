@@ -80,10 +80,10 @@
   },
   "Admin-Dashboard": {
     "dashboard": "لوحة تحكم الأدمن",
-    "posts-table": "جدول المقالات",
-    "users-table": "جدول المستخدمين",
-    "categories-table": "جدول الأقسام",
-    "comments-table": "جدول التعليقات",
+    "posts-table": "المقالات",
+    "users-table": "المستخدمين",
+    "categories-table": "الأقسام",
+    "comments-table": "التعليقات",
     "posts": "المقالات",
     "users": "المستخدمين",
     "categories": "الأقسام",
@@ -140,7 +140,8 @@
     "password": "الرقم السرى",
     "profile-image": "الصوره الشخصيه",
     "if-you-have-account-already-please": "إذا كان لديك حساب بالفعل يرجى",
-    "login": "تسجيل الدخول"
+    "login": "تسجيل الدخول",
+      "confirm-password" : "تأكيد الرقم السرى"
   },
   "login": {
     "login": "تسجيل الدخول",

@@ -92,7 +92,7 @@ const ToggleLikePost = ({ post }: { post: IPost }) => {
         {" "}
         <Typography
           component={"span"}
-          sx={{ color: "error.main", fontWeight: "bold", fontSize: "20px" }}
+          sx={{ color: "primary.main", fontWeight: "bold", fontSize: "20px" }}
         >
           {post?.likes?.length}
         </Typography>{" "}

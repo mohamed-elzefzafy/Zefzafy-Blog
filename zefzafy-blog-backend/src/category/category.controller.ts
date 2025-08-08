@@ -16,7 +16,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Roles } from 'src/auth/decorator/Roles.decorator';
 import { UserRoles } from 'src/common/enums/roles.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { PAGE_LIMIT_ADMIN } from 'src/common/constants';
+import { PAGE_LIMIT } from 'src/common/constants';
 
 @Controller('category')
 export class CategoryController {
@@ -32,7 +32,7 @@ export class CategoryController {
   @Get()
   findAll(
     @Query('page') page: string = '1',
-    @Query('limit') limit: string = `${PAGE_LIMIT_ADMIN}`,
+    @Query('limit') limit: string = `${PAGE_LIMIT}`,
   ) {
     return this.categoryService.findAll(+page, +limit);
   }

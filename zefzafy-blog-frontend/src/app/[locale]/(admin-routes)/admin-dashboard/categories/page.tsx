@@ -26,7 +26,7 @@ import { useTranslations } from "next-intl";
 const AdminCategoriesPage = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useGetCategoriesAdminQuery(`?page=${currentPage}`);
+  const { data , isLoading } = useGetCategoriesAdminQuery(`?page=${currentPage}`);
   const [deleteCategoryAdminPage] = useDeleteCategoryAdminPageMutation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -206,6 +206,7 @@ const AdminCategoriesPage = () => {
           autoPageSize={isSmallScreen}
           pageSizeOptions={[5, 10, 20]}
           disableColumnMenu={isSmallScreen}
+          loading={isLoading}
           sx={{
             fontSize: isSmallScreen ? "12px" : "14px",
             "& .MuiDataGrid-cell": {

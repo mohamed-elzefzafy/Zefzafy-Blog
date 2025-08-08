@@ -3,7 +3,15 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useLoginMutation } from "@/redux/slices/api/authApiSlice";
 import { setCredentials } from "@/redux/slices/authSlice";
 import { UserLogin } from "@/types/auth";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  Link as MuiLink,
+  useTheme,
+} from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -13,6 +21,7 @@ import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const router = useRouter();
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const userNameQuery = searchParams.get("userName");
@@ -73,7 +82,7 @@ const LoginPage = () => {
             mt: 5,
           }}
         >
-          <Typography sx={{ mx: "auto", display: "flex", gap: 1 }}>
+          <Typography sx={{ mx: "auto", display: "flex", gap: 1, mt: 1 }}>
             thanks{" "}
             <Typography component="span" sx={{ color: lightBlue[700] }}>
               {userNameQueryFromUpdatePassword}
@@ -86,7 +95,7 @@ const LoginPage = () => {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          maxWidth: { xs: "70%", md: "30%" },
+          maxWidth: { xs: "70%", sm: "60%" ,md:"40%",lg:"30%"},
           mx: "auto",
           mt: 5,
           display: "flex",
@@ -96,7 +105,7 @@ const LoginPage = () => {
           gap: 2,
         }}
       >
-        <Typography variant="h6" component="h2">
+        <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
           {t("login")}
         </Typography>
 
@@ -129,18 +138,41 @@ const LoginPage = () => {
         >
           {t("login")}
         </Button>
-        <Typography>
+
+        <Typography
+          variant="body2"
+          sx={{ fontSize: { xs: "12px", sm: "16px" } }}
+        >
           {t("if-you-don't-have-account-please")}{" "}
-          <Typography component={Link} href="/auth/register" sx={{ ml: 1 }}>
+          <MuiLink
+            component={Link}
+            href="/auth/register"
+            sx={{
+              color: `${theme.palette.primary.main} !important`,
+              fontWeight: "bold",
+            }}
+            underline="hover"
+          >
             {t("register")}
-          </Typography>{" "}
+          </MuiLink>
         </Typography>
-        <Typography>
+
+        <Typography
+          variant="body2"
+          sx={{ fontSize: { xs: "12px", sm: "16px" } }}
+        >
           {t("if-you-forgot-your-password-please-go")}{" "}
-          <Typography component={Link} href="/auth/resetPassword">
-            {" "}
+          <MuiLink
+            component={Link}
+            href="/auth/resetPassword"
+            sx={{
+              color: `${theme.palette.primary.main} !important`,
+              fontWeight: "bold",
+            }}
+            underline="hover"
+          >
             {t("here")}
-          </Typography>
+          </MuiLink>
         </Typography>
       </Stack>
     </>
